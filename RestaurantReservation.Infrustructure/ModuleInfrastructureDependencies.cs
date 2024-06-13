@@ -1,6 +1,6 @@
 ﻿namespace RestaurantReservation.Infrustructure
 {
-    public class Class1
+    public class ModuleInfrastructureDependencies
     {
 
     }

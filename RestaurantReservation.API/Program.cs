@@ -1,3 +1,5 @@
+using System;
+
 namespace RestaurantReservation.API
 {
     public class Program
@@ -7,6 +9,11 @@ namespace RestaurantReservation.API
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+
+            builder.Services.AddDbContext<AppContext>(option =>
+            {
+                option.UseSqlServer(builder.Configuration.GetConnectionString("dbcontext"));
+            });
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
