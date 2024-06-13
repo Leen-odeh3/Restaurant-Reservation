@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Reflection.Emit;
-
+﻿using Microsoft.EntityFrameworkCore;
+using RestaurantReservation.Domain.Entities;
 namespace RestaurantReservation.Infrustructure.Data;
 public class AppDbContext : DbContext
 {
@@ -10,9 +9,14 @@ public class AppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Reservation>()
+        .HasOne(r => r.Table)
+        .WithMany(t => t.Reservations)
+        .HasForeignKey(r => r.TableID)
+        .OnDelete(DeleteBehavior.Restrict);
+
         base.OnModelCreating(modelBuilder);
     }
-
 
     public DbSet<Customer> Customers { get; set; }
     public DbSet<Employee> Employees { get; set; }

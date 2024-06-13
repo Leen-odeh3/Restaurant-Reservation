@@ -7,7 +7,6 @@ public class Employee
     public string LastName { get; set; }
     public EmployeePosition Position { get; set; }
     public int? RestaurantID { get; set; }
-    public virtual Restaurant Restaurant { get; set; }
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 
 }
