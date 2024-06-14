@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using RestaurantReservation.Core;
 using RestaurantReservation.Infrustructure;
 using RestaurantReservation.Infrustructure.Data;
 using RestaurantReservation.Services;
@@ -12,7 +13,6 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        // Add services to the container.
 
         builder.Services.AddDbContext<AppDbContext>(option =>
         {
@@ -20,16 +20,17 @@ public class Program
         });
 
         builder.Services.AddControllers();
-        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
 
         #region Dependency injections
 
-        builder.Services.AddInfrastructureDependencies().AddServiceDependencies();
-                         
+        builder.Services.AddInfrastructureDependencies()
+                        .AddServiceDependencies()
+                        .AddCoreDependencies();                         
         #endregion
+
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
@@ -42,7 +43,6 @@ public class Program
         app.UseHttpsRedirection();
 
         app.UseAuthorization();
-
 
         app.MapControllers();
 
