@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace RestaurantReservation.Domain.Entities;
+﻿namespace RestaurantReservation.Domain.Entities;
 public class Restaurant
 {
     public int RestaurantID { get; set; }

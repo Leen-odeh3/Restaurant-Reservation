@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using RestaurantReservation.Infrustructure;
 using RestaurantReservation.Infrustructure.Data;
 using System;
 
@@ -22,6 +23,12 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
+
+        #region Dependency injections
+
+        builder.Services.AddInfrastructureDependencies();
+                         
+        #endregion
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.

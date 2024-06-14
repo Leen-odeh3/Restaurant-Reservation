@@ -23,9 +23,6 @@ public class AppDbContext : DbContext
             .WithMany(e => e.Orders)
             .HasForeignKey(o => o.EmployeeID);
 
-       
-
-
         modelBuilder.Entity<Customer>()
             .HasKey(x => x.CustomerID);
 
