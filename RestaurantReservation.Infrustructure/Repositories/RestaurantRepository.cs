@@ -4,12 +4,12 @@ using RestaurantReservation.Infrustructure.Abstracts;
 using RestaurantReservation.Infrustructure.Data;
 
 namespace RestaurantReservation.Infrustructure.Repositories;
-public class RestaurantRepository : IRestaurantRepository
+public class RestaurantRepository : GenericRepositoryAsync<Restaurant> ,IRestaurantRepository 
 {
     #region Fields
     private readonly AppDbContext _context;
     #endregion
-    public RestaurantRepository(AppDbContext context)
+    public RestaurantRepository(AppDbContext context) : base(context)
     {
         _context = context;
     }
