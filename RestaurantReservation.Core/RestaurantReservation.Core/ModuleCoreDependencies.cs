@@ -1,15 +1,17 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
-namespace RestaurantReservation.Core;
-public static class ModuleCoreDependencies
+using AutoMapper;
+using MediatR;
+
+namespace RestaurantReservation.Core
 {
-    public static IServiceCollection AddCoreDependencies(this IServiceCollection services)
+    public static class ModuleCoreDependencies
     {
-        
-        services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
-        services.AddAutoMapper(Assembly.GetExecutingAssembly());
-
-
-        return services;
+        public static IServiceCollection AddCoreDependencies(this IServiceCollection services)
+        {
+            services.AddMediatR(Assembly.GetExecutingAssembly());
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            return services;
+        }
     }
 }
