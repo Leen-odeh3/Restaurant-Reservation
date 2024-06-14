@@ -14,4 +14,12 @@ public class RestaurantService : IRestaurantService
     {
         return await _restaurantRepository.GetRestaurantsAsync();
     }
+
+    public async Task<Restaurant> GetByIDRestaurantsAsync(int id)
+    {
+        var restaurant = _restaurantRepository.GetTableNoTracking()
+                                        .Where(x => x.RestaurantID.Equals(id))
+                                        .FirstOrDefault();
+        return restaurant;
+    }
 }

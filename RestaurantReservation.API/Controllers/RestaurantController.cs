@@ -21,4 +21,11 @@ public class RestaurantController : ControllerBase
         var response = await _med.Send(new GetRestaurantListQuery());
         return Ok(response);
     }
+
+    [HttpGet("/Restaurant/{id}")]
+    public async Task<IActionResult> GetByIDRestaurant([FromRoute] int id)
+    {
+        var response = await _med.Send(new GetRestaurantByIDQuery(id));
+        return Ok(response);
+    }
 }

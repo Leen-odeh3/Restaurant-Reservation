@@ -51,7 +51,6 @@ public class GenericRepositoryAsync<T> : IGenericRepositoryAsync<T> where T : cl
     public IQueryable<T> GetTableNoTracking()
     {
         return _context.Set<T>().AsNoTracking().AsQueryable();
-
     }
 
     public IDbContextTransaction BeginTransaction()
