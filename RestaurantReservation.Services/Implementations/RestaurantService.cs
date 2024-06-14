@@ -10,6 +10,14 @@ public class RestaurantService : IRestaurantService
     {
         _restaurantRepository = restaurantRepository;
     }
+
+    public async Task<Restaurant> AddRestaurantsAsync(Restaurant Restaurant)
+    {
+      await _restaurantRepository.AddAsync(Restaurant);
+        return Restaurant;
+
+    }
+
     public async Task<List<Restaurant>> GetAllRestaurantsAsync()
     {
         return await _restaurantRepository.GetRestaurantsAsync();

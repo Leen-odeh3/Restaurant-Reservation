@@ -35,13 +35,14 @@ public class ResponseHandler
             Message = "UnAuthorized"
         };
     }
-    public Response<T> BadRequest<T>(string Message = null)
+    public Response<T> BadRequest<T>(T entity)
     {
         return new Response<T>()
         {
-            StatusCode = System.Net.HttpStatusCode.BadRequest,
-            Succeeded = false,
-            Message = Message == null ? "Bad Request" : Message
+            Data = entity,
+            StatusCode = System.Net.HttpStatusCode.OK,
+            Succeeded = true,
+            Message = "Added Successfully",
         };
     }
 

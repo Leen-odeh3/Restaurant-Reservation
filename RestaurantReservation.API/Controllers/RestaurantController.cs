@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using RestaurantReservation.Core.Features.Restaurants.Commands.Models;
 using RestaurantReservation.Core.Features.Restaurants.Queries.Models;
 using RestaurantReservation.Domain.AppMetaData;
 
@@ -26,6 +27,12 @@ public class RestaurantController : ControllerBase
     public async Task<IActionResult> GetByIDRestaurant([FromRoute] int id)
     {
         var response = await _med.Send(new GetRestaurantByIDQuery(id));
+        return Ok(response);
+    }
+    [HttpPost(Router.RestaurantRouting.Create)]
+    public async Task<IActionResult> Create([FromBody] AddRestaurantCommand command)
+    {
+        var response = await _med.Send(command);
         return Ok(response);
     }
 }

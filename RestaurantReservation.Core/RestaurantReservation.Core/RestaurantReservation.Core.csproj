@@ -13,8 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Restaurants\Commands\" />
-    <Folder Include="Mapping\Restaurants\CommandMapping\" />
+    <Folder Include="Features\Restaurants\Commands\Validators\" />
   </ItemGroup>
 
   <ItemGroup>
