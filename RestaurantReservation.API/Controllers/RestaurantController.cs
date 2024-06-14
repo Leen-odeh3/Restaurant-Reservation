@@ -16,7 +16,7 @@ public class RestaurantController : ControllerBase
         _med = mediator;
     }
 
-    [HttpGet]
+    [HttpGet("/Restaurant/List")]
     public async Task<IActionResult> GetAllRestaurant()
     {
         var response = await _med.Send(new GetRestaurantListQuery());

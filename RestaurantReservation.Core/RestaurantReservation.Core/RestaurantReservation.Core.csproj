@@ -14,9 +14,11 @@
 
   <ItemGroup>
     <Folder Include="Features\Restaurants\Commands\" />
+    <Folder Include="Mapping\Restaurants\CommandMapping\" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="6.2.2" />
     <PackageReference Include="MediatR" Version="6.0.0" />
   </ItemGroup>
 
