@@ -1,7 +1,11 @@
 ﻿using AutoMapper;
 
 namespace RestaurantReservation.Core.Mapping.Restaurants;
-public class StudentProfile : Profile
+public partial class StudentProfile : Profile
 {
-    GetRestaurantListMapping();
+    public StudentProfile()
+    {
+       GetRestaurantListMapping();
+    }
+ 
 }
