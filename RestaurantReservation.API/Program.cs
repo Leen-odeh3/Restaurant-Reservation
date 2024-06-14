@@ -3,7 +3,7 @@ using RestaurantReservation.Core;
 using RestaurantReservation.Infrustructure;
 using RestaurantReservation.Infrustructure.Data;
 using RestaurantReservation.Services;
-using System;
+
 
 namespace RestaurantReservation.API;
 
@@ -22,7 +22,6 @@ public class Program
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
-
 
         #region Dependency injections
 
