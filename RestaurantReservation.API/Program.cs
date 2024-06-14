@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using RestaurantReservation.Infrustructure;
 using RestaurantReservation.Infrustructure.Data;
+using RestaurantReservation.Services;
 using System;
 
 namespace RestaurantReservation.API;
@@ -26,7 +27,7 @@ public class Program
 
         #region Dependency injections
 
-        builder.Services.AddInfrastructureDependencies();
+        builder.Services.AddInfrastructureDependencies().AddServiceDependencies();
                          
         #endregion
         var app = builder.Build();
