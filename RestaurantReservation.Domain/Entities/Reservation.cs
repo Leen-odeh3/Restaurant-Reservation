@@ -8,7 +8,7 @@ public class Reservation
     public DateTime ReservationDate { get; set; }
     public int PartySize { get; set; }
     public List<Order> Orders { get; set; }
-
-    // Navigation property to Table
+    public Customer customer { get; set; }
+    public Restaurant restaurant { get; set; }
     public Table Table { get; set; }
 }

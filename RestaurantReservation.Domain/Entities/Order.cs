@@ -8,5 +8,7 @@ public class Order
     public int EmployeeID { get; set; }
     public DateTime OrderDate { get; set; } = DateTime.Now;
     public decimal TotalAmount { get; set; }
+    public Employee employee { get; set; }
+    public Reservation reservation { get; set; }
     public List<OrderItem> OrderItems { get; set; }
 }
