@@ -40,26 +40,15 @@ public class RestaurantCommandHandler : ResponseHandler,
         if (result is not null) return Success(result);
         return BadRequest<Restaurant>(result);
     }
+
     public async Task<Response<Restaurant>> Handle(DeleteRestaurantCommand request, CancellationToken cancellationToken)
     {
-
-            var restaurantToDelete = await _restaurantService.GetByIDRestaurantsAsync(request.id);
-
-            if (restaurantToDelete == null)
-            {
-                return new ResponseHandler().NotFound<Restaurant>("Restaurant not found");
-            }
-
-            var deletedRestaurant = await _restaurantService.DeleteRestaurantsAsync(request.id);
-
-            if (deletedRestaurant != null)
-            {
-                return new ResponseHandler().Deleted<Restaurant>();
-            }
-            else
-            {
-                return new ResponseHandler().BadRequest<Restaurant>("Failed to delete restaurant");
-            }         
+        var output = await _restaurantService.GetByIDRestaurantsAsync(request.id);
+     
+        if (output is null) return NotFound<Restaurant>("Not Found");
+        //Call service that make Delete
+        var result = await _restaurantService.DeleteAsync(output);
+        if (result == "Success") return Deleted<Restaurant>();
+        else return BadRequest<Restaurant>("Not Succeeded Deleted");
     }
-
 }

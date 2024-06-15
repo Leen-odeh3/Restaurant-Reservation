@@ -46,4 +46,5 @@ public class RestaurantController : AppControllerBase
     {
         return NewResult(await Mediator.Send(new DeleteRestaurantCommand(id)));
     }
+
 }

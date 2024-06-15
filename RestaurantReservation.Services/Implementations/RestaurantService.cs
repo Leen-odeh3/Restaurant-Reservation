@@ -12,7 +12,6 @@ public class RestaurantService : IRestaurantService
     {
         _restaurantRepository = restaurantRepository;
     }
-
     public async Task<Restaurant> AddRestaurantsAsync(Restaurant Restaurant)
     {
       await _restaurantRepository.AddAsync(Restaurant);
@@ -20,18 +19,20 @@ public class RestaurantService : IRestaurantService
 
     }
 
-    public async Task<Restaurant> DeleteRestaurantsAsync(int id)
+    public async Task<string> DeleteAsync(Restaurant Restaurant)
     {
-        var restaurantToDelete = await _restaurantRepository.GetByIdAsync(id);
-
-        if (restaurantToDelete is not null)
+        var trans = _restaurantRepository.BeginTransaction();
+        try
         {
-            await _restaurantRepository.DeleteAsync(restaurantToDelete);
-            return restaurantToDelete;
+            await _restaurantRepository.DeleteAsync(Restaurant);
+            await trans.CommitAsync();
+            return "Success";
         }
-        else
+        catch (Exception ex)
         {
-            throw new Exception("Restaurant not found");
+            await trans.RollbackAsync();
+            Log.Error(ex.Message);
+            return "Falied";
         }
     }
 
@@ -56,12 +57,10 @@ public class RestaurantService : IRestaurantService
                 throw new Exception("Restaurant not found");
             }
         }
-
     public async Task<List<Restaurant>> GetAllRestaurantsAsync()
     {
         return await _restaurantRepository.GetRestaurantsAsync();
     }
-
     public async Task<Restaurant> GetByIDRestaurantsAsync(int id)
     {
         var restaurant = _restaurantRepository.GetTableNoTracking()
@@ -69,7 +68,6 @@ public class RestaurantService : IRestaurantService
                                         .FirstOrDefault();
         return restaurant;
     }
-
     public async Task<bool> IsNameExist(string name, int id)
     {
         var result = await _restaurantRepository.GetTableNoTracking().Where(x => x.Name.Equals(name) & !x.RestaurantID.Equals(id)).FirstOrDefaultAsync();

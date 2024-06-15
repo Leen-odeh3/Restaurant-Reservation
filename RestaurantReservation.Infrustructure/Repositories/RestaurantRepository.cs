@@ -17,4 +17,5 @@ public class RestaurantRepository : GenericRepositoryAsync<Restaurant> ,IRestaur
     {
        return await _context.Restaurants.ToListAsync();
     }
+
 }
