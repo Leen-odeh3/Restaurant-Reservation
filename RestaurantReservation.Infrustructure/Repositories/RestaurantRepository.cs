@@ -13,9 +13,4 @@ public class RestaurantRepository : GenericRepositoryAsync<Restaurant> ,IRestaur
     {
         _context = context;
     }
-    public async Task<List<Restaurant>> GetRestaurantsAsync()
-    {
-       return await _context.Restaurants.ToListAsync();
-    }
-
 }

@@ -84,5 +84,8 @@ public class GenericRepositoryAsync<T> : IGenericRepositoryAsync<T> where T : cl
         _context.Set<T>().UpdateRange(entities);
         await _context.SaveChangesAsync();
     }
-
+    public async Task<IEnumerable<T>> GetListAsync()
+    {
+        return await _context.Set<T>().ToListAsync();
+    }
 }
