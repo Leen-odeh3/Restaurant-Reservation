@@ -1,5 +1,7 @@
-﻿using RestaurantReservation.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using RestaurantReservation.Domain.Entities;
 using RestaurantReservation.Infrustructure.Abstracts;
+using RestaurantReservation.Infrustructure.Repositories;
 using RestaurantReservation.Services.Abstracts;
 
 namespace RestaurantReservation.Services.Implementations;
@@ -18,6 +20,28 @@ public class RestaurantService : IRestaurantService
 
     }
 
+    public async Task<Restaurant> EditRestaurantsAsync(Restaurant restaurant)
+    { 
+     var existingRestaurant = await _restaurantRepository.GetByIdAsync(restaurant.RestaurantID);
+
+            if (existingRestaurant is not null)
+            {
+              
+                existingRestaurant.Name = restaurant.Name;
+                existingRestaurant.Address = restaurant.Address;
+                existingRestaurant.PhoneNumber = restaurant.PhoneNumber;
+                existingRestaurant.OperatingHours = restaurant.OperatingHours;
+
+                await _restaurantRepository.UpdateAsync(existingRestaurant);
+
+                return existingRestaurant;
+            }
+            else
+            {
+                throw new Exception("Restaurant not found");
+            }
+        }
+
     public async Task<List<Restaurant>> GetAllRestaurantsAsync()
     {
         return await _restaurantRepository.GetRestaurantsAsync();
@@ -30,4 +54,12 @@ public class RestaurantService : IRestaurantService
                                         .FirstOrDefault();
         return restaurant;
     }
+
+    public async Task<bool> IsNameExist(string name, int id)
+    {
+        var result = await _restaurantRepository.GetTableNoTracking().Where(x => x.Name.Equals(name) & !x.RestaurantID.Equals(id)).FirstOrDefaultAsync();
+        if (result is null) return false;
+        return true;
+    }
+
 }

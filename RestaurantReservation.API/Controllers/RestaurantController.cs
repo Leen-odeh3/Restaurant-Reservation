@@ -10,30 +10,34 @@ namespace RestaurantReservation.API.Controllers;
 [ApiController]
 public class RestaurantController : AppControllerBase
 {
-    private readonly IMediator _med;
-
-    public RestaurantController(IMediator mediator)
+    public RestaurantController()
     {
-        _med = mediator;
+    
     }
 
     [HttpGet(Router.RestaurantRouting.List)]
     public async Task<IActionResult> GetAllRestaurant()
     {
-        var response = await _med.Send(new GetRestaurantListQuery());
+        var response = await Mediator.Send(new GetRestaurantListQuery());
         return Ok(response);
     }
 
     [HttpGet(Router.RestaurantRouting.GetByID)]
     public async Task<IActionResult> GetByIDRestaurant([FromRoute] int id)
     {
-        var response = await _med.Send(new GetRestaurantByIDQuery(id));
+        var response = await Mediator.Send(new GetRestaurantByIDQuery(id));
         return NewResult(response);
     }
     [HttpPost(Router.RestaurantRouting.Create)]
     public async Task<IActionResult> Create([FromBody] AddRestaurantCommand command)
     {
-        var response = await _med.Send(command);
+        var response = await Mediator.Send(command);
+        return NewResult(response);
+    }
+    [HttpPut(Router.RestaurantRouting.Edit)]
+    public async Task<IActionResult> Edit([FromBody] EditRestaurantCommand command)
+    {
+        var response = await Mediator.Send(command);
         return NewResult(response);
     }
 }

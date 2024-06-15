@@ -8,6 +8,7 @@ public partial class StudentProfile : Profile
        GetRestaurantListMapping();
        GetRestaurantByIDMapping();
        AddRestaurantMapping();
+       EditRestaurantMapping();
     }
  
 }

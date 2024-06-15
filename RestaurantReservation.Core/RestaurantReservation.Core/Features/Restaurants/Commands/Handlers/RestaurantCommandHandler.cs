@@ -6,7 +6,9 @@ using RestaurantReservation.Domain.Entities;
 using RestaurantReservation.Services.Abstracts;
 
 namespace RestaurantReservation.Core.Features.Restaurants.Commands.Handlers;
-public class RestaurantCommandHandler : ResponseHandler, IRequestHandler<AddRestaurantCommand, Response<Restaurant>>
+public class RestaurantCommandHandler : ResponseHandler, 
+                                        IRequestHandler<AddRestaurantCommand, Response<Restaurant>>,
+                                        IRequestHandler<EditRestaurantCommand, Response<Restaurant>>
 {
     private readonly IRestaurantService _restaurantService;
     private readonly IMapper _mapper;
@@ -28,4 +30,13 @@ public class RestaurantCommandHandler : ResponseHandler, IRequestHandler<AddRest
         return BadRequest<Restaurant>(result);
     }
 
+    public async Task<Response<Restaurant>> Handle(EditRestaurantCommand request, CancellationToken cancellationToken)
+    {
+        var mapper = _mapper.Map<Restaurant>(request);
+
+        var result = await _restaurantService.EditRestaurantsAsync(mapper);
+
+        if (result is not null) return Success(result);
+        return BadRequest<Restaurant>(result);
+    }
 }
