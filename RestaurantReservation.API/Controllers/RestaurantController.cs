@@ -40,4 +40,10 @@ public class RestaurantController : AppControllerBase
         var response = await Mediator.Send(command);
         return NewResult(response);
     }
+
+    [HttpDelete(Router.RestaurantRouting.Delete)]
+    public async Task<IActionResult> Delete([FromRoute] int id)
+    {
+        return NewResult(await Mediator.Send(new DeleteRestaurantCommand(id)));
+    }
 }

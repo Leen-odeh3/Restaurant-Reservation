@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RestaurantReservation.Domain.Entities;
 using RestaurantReservation.Infrustructure.Abstracts;
-using RestaurantReservation.Infrustructure.Repositories;
 using RestaurantReservation.Services.Abstracts;
+using Serilog;
 
 namespace RestaurantReservation.Services.Implementations;
 public class RestaurantService : IRestaurantService
@@ -18,6 +18,21 @@ public class RestaurantService : IRestaurantService
       await _restaurantRepository.AddAsync(Restaurant);
         return Restaurant;
 
+    }
+
+    public async Task<Restaurant> DeleteRestaurantsAsync(int id)
+    {
+        var restaurantToDelete = await _restaurantRepository.GetByIdAsync(id);
+
+        if (restaurantToDelete is not null)
+        {
+            await _restaurantRepository.DeleteAsync(restaurantToDelete);
+            return restaurantToDelete;
+        }
+        else
+        {
+            throw new Exception("Restaurant not found");
+        }
     }
 
     public async Task<Restaurant> EditRestaurantsAsync(Restaurant restaurant)

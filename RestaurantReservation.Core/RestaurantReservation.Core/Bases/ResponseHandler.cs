@@ -1,4 +1,5 @@
-﻿namespace RestaurantReservation.Core.Bases;
+﻿
+namespace RestaurantReservation.Core.Bases;
 public class ResponseHandler
 {
 
@@ -40,11 +41,12 @@ public class ResponseHandler
         return new Response<T>()
         {
             Data = entity,
-            StatusCode = System.Net.HttpStatusCode.OK,
-            Succeeded = true,
-            Message = "Added Successfully",
+            StatusCode = System.Net.HttpStatusCode.BadRequest,
+            Succeeded = false,
+            Message = "Bad Request",
         };
     }
+
 
     public Response<T> NotFound<T>(string message = null)
     {
@@ -67,5 +69,16 @@ public class ResponseHandler
             Meta = Meta
         };
     }
+    public Response<T> BadRequest<T>(string msg)
+    {
+        return new Response<T>()
+        {
+            Data = default(T),
+            StatusCode = System.Net.HttpStatusCode.BadRequest,
+            Succeeded = false,
+            Message = msg ?? "Bad Request", 
+        };
+    }
+
 }
 

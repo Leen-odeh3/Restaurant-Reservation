@@ -8,7 +8,8 @@ using RestaurantReservation.Services.Abstracts;
 namespace RestaurantReservation.Core.Features.Restaurants.Commands.Handlers;
 public class RestaurantCommandHandler : ResponseHandler, 
                                         IRequestHandler<AddRestaurantCommand, Response<Restaurant>>,
-                                        IRequestHandler<EditRestaurantCommand, Response<Restaurant>>
+                                        IRequestHandler<EditRestaurantCommand, Response<Restaurant>>,
+                                        IRequestHandler<DeleteRestaurantCommand, Response<Restaurant>>
 {
     private readonly IRestaurantService _restaurantService;
     private readonly IMapper _mapper;
@@ -39,4 +40,26 @@ public class RestaurantCommandHandler : ResponseHandler,
         if (result is not null) return Success(result);
         return BadRequest<Restaurant>(result);
     }
+    public async Task<Response<Restaurant>> Handle(DeleteRestaurantCommand request, CancellationToken cancellationToken)
+    {
+
+            var restaurantToDelete = await _restaurantService.GetByIDRestaurantsAsync(request.id);
+
+            if (restaurantToDelete == null)
+            {
+                return new ResponseHandler().NotFound<Restaurant>("Restaurant not found");
+            }
+
+            var deletedRestaurant = await _restaurantService.DeleteRestaurantsAsync(request.id);
+
+            if (deletedRestaurant != null)
+            {
+                return new ResponseHandler().Deleted<Restaurant>();
+            }
+            else
+            {
+                return new ResponseHandler().BadRequest<Restaurant>("Failed to delete restaurant");
+            }         
+    }
+
 }
