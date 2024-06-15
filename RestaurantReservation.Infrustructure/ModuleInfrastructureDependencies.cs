@@ -8,10 +8,10 @@ public static class ModuleInfrastructureDependencies
         public static IServiceCollection AddInfrastructureDependencies(this IServiceCollection services)
         {
             services.AddTransient<IRestaurantRepository,RestaurantRepository>();
-        services.AddTransient(typeof(IGenericRepositoryAsync<>), typeof(GenericRepositoryAsync<>));
+            services.AddTransient(typeof(IGenericRepositoryAsync<>), typeof(GenericRepositoryAsync<>));
 
 
-        return services;
+           return services;
         }
     
 }

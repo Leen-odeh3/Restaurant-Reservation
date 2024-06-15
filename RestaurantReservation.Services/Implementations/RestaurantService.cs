@@ -18,7 +18,6 @@ public class RestaurantService : IRestaurantService
         return Restaurant;
 
     }
-
     public async Task<string> DeleteAsync(Restaurant Restaurant)
     {
         var trans = _restaurantRepository.BeginTransaction();
@@ -35,7 +34,6 @@ public class RestaurantService : IRestaurantService
             return "Falied";
         }
     }
-
     public async Task<Restaurant> EditRestaurantsAsync(Restaurant restaurant)
     { 
      var existingRestaurant = await _restaurantRepository.GetByIdAsync(restaurant.RestaurantID);
@@ -59,7 +57,7 @@ public class RestaurantService : IRestaurantService
         }
     public async Task<List<Restaurant>> GetAllRestaurantsAsync()
     {
-        return await _restaurantRepository.GetRestaurantsAsync();
+        return await _restaurantRepository.GetListAsync();
     }
     public async Task<Restaurant> GetByIDRestaurantsAsync(int id)
     {

@@ -5,7 +5,7 @@ public interface IGenericRepositoryAsync<T> where T : class
 {
     Task DeleteRangeAsync(ICollection<T> entities);
     Task<T> GetByIdAsync(int id);
-    Task<IEnumerable<T>> GetListAsync();
+    Task<List<T>> GetListAsync();
     Task SaveChangesAsync();
     IDbContextTransaction BeginTransaction();
     void Commit();

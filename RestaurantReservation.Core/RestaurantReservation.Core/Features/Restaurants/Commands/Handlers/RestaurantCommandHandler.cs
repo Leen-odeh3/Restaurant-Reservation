@@ -9,7 +9,7 @@ namespace RestaurantReservation.Core.Features.Restaurants.Commands.Handlers;
 public class RestaurantCommandHandler : ResponseHandler, 
                                         IRequestHandler<AddRestaurantCommand, Response<Restaurant>>,
                                         IRequestHandler<EditRestaurantCommand, Response<Restaurant>>,
-                                        IRequestHandler<DeleteRestaurantCommand, Response<Restaurant>>
+                                        IRequestHandler<DeleteRestaurantCommand, Response<String>>
 {
     private readonly IRestaurantService _restaurantService;
     private readonly IMapper _mapper;
@@ -40,15 +40,24 @@ public class RestaurantCommandHandler : ResponseHandler,
         if (result is not null) return Success(result);
         return BadRequest<Restaurant>(result);
     }
-
-    public async Task<Response<Restaurant>> Handle(DeleteRestaurantCommand request, CancellationToken cancellationToken)
+    public async Task<Response<string>> Handle(DeleteRestaurantCommand request, CancellationToken cancellationToken)
     {
-        var output = await _restaurantService.GetByIDRestaurantsAsync(request.id);
-     
-        if (output is null) return NotFound<Restaurant>("Not Found");
-        //Call service that make Delete
-        var result = await _restaurantService.DeleteAsync(output);
-        if (result == "Success") return Deleted<Restaurant>();
-        else return BadRequest<Restaurant>("Not Succeeded Deleted");
+        var restaurant = await _restaurantService.GetByIDRestaurantsAsync(request.Id);
+
+        if (restaurant == null)
+        {
+            return NotFound<string>("Restaurant not found");
+        }
+
+        var deletionResult = await _restaurantService.DeleteAsync(restaurant);
+
+        if (deletionResult == "Success")
+        {
+            return Deleted<string>();
+        }
+        else
+        {
+            return BadRequest<string>("Failed to delete restaurant");
+        }
     }
 }

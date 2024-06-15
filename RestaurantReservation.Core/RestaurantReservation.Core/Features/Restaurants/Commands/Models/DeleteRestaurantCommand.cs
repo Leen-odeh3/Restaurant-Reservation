@@ -5,9 +5,9 @@ using RestaurantReservation.Domain.Entities;
 namespace RestaurantReservation.Core.Features.Restaurants.Commands.Models;
 public class DeleteRestaurantCommand : IRequest<Response<string>>
 {
-    public int id { get; set; }
+    public int Id { get; set; }
     public DeleteRestaurantCommand(int id)
     {
-        id = id;
+        Id = id;
     }
 }
