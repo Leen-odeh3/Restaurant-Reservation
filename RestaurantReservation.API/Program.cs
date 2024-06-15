@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using RestaurantReservation.Core;
+using RestaurantReservation.Core.MiddleWare;
 using RestaurantReservation.Infrustructure;
 using RestaurantReservation.Infrustructure.Data;
 using RestaurantReservation.Services;
@@ -38,6 +39,7 @@ public class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
+        app.UseMiddleware<ErrorHandlerMiddleware>();
 
         app.UseHttpsRedirection();
 
