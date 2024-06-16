@@ -44,7 +44,7 @@ public class RestaurantCommandHandler : ResponseHandler,
     {
         var restaurant = await _restaurantService.GetByIDRestaurantsAsync(request.Id);
 
-        if (restaurant == null)
+        if (restaurant is null)
         {
             return NotFound<string>("Restaurant not found");
         }

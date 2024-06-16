@@ -20,13 +20,6 @@ namespace RestaurantReservation.API.Controllers
             return Ok(response);
         } 
 
-      /*  [HttpGet(Router.TableRouting.GetByID)]
-        public async Task<IActionResult> GetByIDTable([FromRoute] int id)
-        {
-            var response = await Mediator.Send(new GetTableByIDQuery(id));
-            return NewResult(response);
-        }*/
-
         [HttpPost(Router.TableRouting.Create)]
         public async Task<IActionResult> Create([FromBody] AddTableCommand command)
         {
@@ -41,10 +34,10 @@ namespace RestaurantReservation.API.Controllers
             return NewResult(response);
         }
 
-     /*   [HttpDelete(Router.TableRouting.Delete)]
+       [HttpDelete(Router.TableRouting.Delete)]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             return NewResult(await Mediator.Send(new DeleteTableCommand(id)));
-        }*/
+        }
     }
 }
