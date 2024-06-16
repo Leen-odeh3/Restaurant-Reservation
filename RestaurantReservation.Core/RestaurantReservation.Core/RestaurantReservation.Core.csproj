@@ -21,4 +21,9 @@
     <PackageReference Include="Serilog" Version="4.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\Tables\Commands\Validators\" />
+    <Folder Include="Features\Tables\Queries\" />
+  </ItemGroup>
+
 </Project>

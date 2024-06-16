@@ -9,9 +9,9 @@ public static class ModuleInfrastructureDependencies
         {
             services.AddTransient<IRestaurantRepository,RestaurantRepository>();
             services.AddTransient(typeof(IGenericRepositoryAsync<>), typeof(GenericRepositoryAsync<>));
+            services.AddTransient<ITableRepository, TableRepository>();
 
-
-           return services;
+        return services;
         }
     
 }

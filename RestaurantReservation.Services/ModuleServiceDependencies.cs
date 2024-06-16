@@ -8,7 +8,8 @@ public static class ModuleServiceDependencies
     public static IServiceCollection AddServiceDependencies(this IServiceCollection services)
     {
         services.AddTransient<IRestaurantService, RestaurantService>();
-       
+        services.AddTransient<ITableService, TableService>();
+
         return services;
     }
 }

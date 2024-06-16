@@ -2,7 +2,7 @@
 using RestaurantReservation.Domain.Entities;
 
 namespace RestaurantReservation.Core.Mapping.Restaurants;
-public partial class StudentProfile
+public partial class RestaurantProfile
 {
     public void GetRestaurantListMapping()
     {

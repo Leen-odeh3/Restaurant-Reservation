@@ -1,5 +1,4 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using RestaurantReservation.API.Base;
 using RestaurantReservation.Core.Features.Restaurants.Commands.Models;
 using RestaurantReservation.Core.Features.Restaurants.Queries.Models;
