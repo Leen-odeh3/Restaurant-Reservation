@@ -24,7 +24,7 @@ namespace RestaurantReservation.Core.Features.Tables.Queries.Handlers
 
         public async Task<Response<List<GetTableListResponse>>> Handle(GetTableListQuery request, CancellationToken cancellationToken)
         {
-            var result = await _tableService.GetAllTablesAsync();
+            var result = await _tableService.GetAllAsync();
             var mappedResult = _mapper.Map<List<GetTableListResponse>>(result);
             var response = Success(mappedResult);
             return response;

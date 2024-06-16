@@ -26,7 +26,7 @@ public class TableCommandHandler : ResponseHandler,
     {
         var mapper = _mapper.Map<Table>(request);
 
-        var result = await _tableService.AddTablesAsync(mapper);
+        var result = await _tableService.AddAsync(mapper);
 
         if (result is not null) return Created(result);
         return BadRequest<Table>(result);
@@ -36,7 +36,7 @@ public class TableCommandHandler : ResponseHandler,
     {
         var mapper = _mapper.Map<Table>(request);
 
-        var result = await _tableService.EditTablesAsync(mapper);
+        var result = await _tableService.EditAsync(mapper);
 
         if (result is not null) return Success(result);
         return BadRequest<Table>(result);
@@ -44,7 +44,7 @@ public class TableCommandHandler : ResponseHandler,
 
     public async Task<Response<string>> Handle(DeleteTableCommand request, CancellationToken cancellationToken)
     {
-        var table = await _tableService.GetByIDTableAsync(request.Id);
+        var table = await _tableService.GetByIdAsync(request.Id);
 
         if (table is null)
         {

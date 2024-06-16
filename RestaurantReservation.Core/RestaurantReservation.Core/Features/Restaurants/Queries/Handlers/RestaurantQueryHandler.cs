@@ -22,7 +22,7 @@ public class RestaurantQueryHandler : ResponseHandler,
 
     public async Task<Response<List<GetRestaurantListResponse>>> Handle(GetRestaurantListQuery request, CancellationToken cancellationToken)
     {
-        var result = await _restaurantService.GetAllRestaurantsAsync();
+        var result = await _restaurantService.GetAllAsync();
         var mappedResult = _mapper.Map<List<GetRestaurantListResponse>>(result);
 
         var response = Success(mappedResult);
@@ -31,7 +31,7 @@ public class RestaurantQueryHandler : ResponseHandler,
 
     public async Task<Response<GetRestaurantListResponse>> Handle(GetRestaurantByIDQuery request, CancellationToken cancellationToken)
     {
-        var restaurant = await _restaurantService.GetByIDRestaurantsAsync(request.Id);
+        var restaurant = await _restaurantService.GetByIdAsync(request.Id);
 
         if (restaurant is null)
         {

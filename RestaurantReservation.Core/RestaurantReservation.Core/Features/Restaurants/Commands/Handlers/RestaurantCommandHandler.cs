@@ -25,7 +25,7 @@ public class RestaurantCommandHandler : ResponseHandler,
     {
         var mapper = _mapper.Map<Restaurant>(request);
 
-        var result = await _restaurantService.AddRestaurantsAsync(mapper);
+        var result = await _restaurantService.AddAsync(mapper);
 
         if (result is not null) return Created(result);
         return BadRequest<Restaurant>(result);
@@ -35,14 +35,14 @@ public class RestaurantCommandHandler : ResponseHandler,
     {
         var mapper = _mapper.Map<Restaurant>(request);
 
-        var result = await _restaurantService.EditRestaurantsAsync(mapper);
+        var result = await _restaurantService.EditAsync(mapper);
 
         if (result is not null) return Success(result);
         return BadRequest<Restaurant>(result);
     }
     public async Task<Response<string>> Handle(DeleteRestaurantCommand request, CancellationToken cancellationToken)
     {
-        var restaurant = await _restaurantService.GetByIDRestaurantsAsync(request.Id);
+        var restaurant = await _restaurantService.GetByIdAsync(request.Id);
 
         if (restaurant is null)
         {

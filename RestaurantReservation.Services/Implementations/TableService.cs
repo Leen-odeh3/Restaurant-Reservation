@@ -1,46 +1,47 @@
 ﻿using RestaurantReservation.Domain.Entities;
 using RestaurantReservation.Infrustructure.Abstracts;
-using RestaurantReservation.Infrustructure.Repositories;
 using RestaurantReservation.Services.Abstracts;
-using Serilog;
 namespace RestaurantReservation.Services.Implementations;
 public class TableService : ITableService
 {
     private readonly ITableRepository _tableRepository;
+
     public TableService(ITableRepository tableRepository)
     {
-       _tableRepository = tableRepository;
+        _tableRepository = tableRepository ?? throw new ArgumentNullException(nameof(tableRepository));
     }
-    public async Task<Table> AddTablesAsync(Table Table)
+
+    public async Task<Table> AddAsync(Table table)
     {
-        await _tableRepository.AddAsync(Table);
-        return Table;
+        await _tableRepository.AddAsync(table);
+        return table;
     }
-    public async Task<string> DeleteAsync(Table Table)
+
+    public async Task<string> DeleteAsync(Table table)
     {
         var trans = _tableRepository.BeginTransaction();
         try
         {
-            await _tableRepository.DeleteAsync(Table);
+            await _tableRepository.DeleteAsync(table);
             await trans.CommitAsync();
             return "Success";
         }
         catch (Exception ex)
         {
             await trans.RollbackAsync();
-            Log.Error(ex.Message);
-            return "Falied";
+            Console.WriteLine($"Error deleting table: {ex.Message}");
+            return "Failed";
         }
     }
-    public async Task<Table> EditTablesAsync(Table Table)
+
+    public async Task<Table> EditAsync(Table table)
     {
-        var existingTable = await _tableRepository.GetByIdAsync(Table.TableID);
+        var existingTable = await _tableRepository.GetByIdAsync(table.TableID);
 
-        if (existingTable is not null)
+        if (existingTable != null)
         {
-
-            existingTable.Capacity = Table.Capacity;
-            existingTable.RestaurantID =Table.RestaurantID;
+            existingTable.Capacity = table.Capacity;
+            existingTable.RestaurantID = table.RestaurantID;
 
             await _tableRepository.UpdateAsync(existingTable);
 
@@ -51,13 +52,15 @@ public class TableService : ITableService
             throw new Exception("Table not found");
         }
     }
-    public async Task<List<Table>> GetAllTablesAsync()
+
+    public async Task<List<Table>> GetAllAsync()
     {
         return await _tableRepository.GetListAsync();
     }
-    public async Task<Table> GetByIDTableAsync(int id)
+
+    public async Task<Table> GetByIdAsync(int id)
     {
-        return await _tableRepository.GetByIdAsync(id); 
+        return await _tableRepository.GetByIdAsync(id);
     }
 }
 

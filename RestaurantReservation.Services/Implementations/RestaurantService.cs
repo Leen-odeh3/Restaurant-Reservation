@@ -8,69 +8,71 @@ namespace RestaurantReservation.Services.Implementations;
 public class RestaurantService : IRestaurantService
 {
     private readonly IRestaurantRepository _restaurantRepository;
+
     public RestaurantService(IRestaurantRepository restaurantRepository)
     {
-        _restaurantRepository = restaurantRepository;
+        _restaurantRepository = restaurantRepository ?? throw new ArgumentNullException(nameof(restaurantRepository));
     }
-    public async Task<Restaurant> AddRestaurantsAsync(Restaurant Restaurant)
-    {
-      await _restaurantRepository.AddAsync(Restaurant);
-        return Restaurant;
 
+    public async Task<Restaurant> AddAsync(Restaurant restaurant)
+    {
+        await _restaurantRepository.AddAsync(restaurant);
+        return restaurant;
     }
-    public async Task<string> DeleteAsync(Restaurant Restaurant)
+
+    public async Task<string> DeleteAsync(Restaurant restaurant)
     {
         var trans = _restaurantRepository.BeginTransaction();
         try
         {
-            await _restaurantRepository.DeleteAsync(Restaurant);
+            await _restaurantRepository.DeleteAsync(restaurant);
             await trans.CommitAsync();
             return "Success";
         }
         catch (Exception ex)
         {
             await trans.RollbackAsync();
-            Log.Error(ex.Message);
-            return "Falied";
+            Console.WriteLine($"Error deleting restaurant: {ex.Message}");
+            return "Failed";
         }
     }
-    public async Task<Restaurant> EditRestaurantsAsync(Restaurant restaurant)
-    { 
-     var existingRestaurant = await _restaurantRepository.GetByIdAsync(restaurant.RestaurantID);
 
-            if (existingRestaurant is not null)
-            {
-              
-                existingRestaurant.Name = restaurant.Name;
-                existingRestaurant.Address = restaurant.Address;
-                existingRestaurant.PhoneNumber = restaurant.PhoneNumber;
-                existingRestaurant.OperatingHours = restaurant.OperatingHours;
+    public async Task<Restaurant> EditAsync(Restaurant restaurant)
+    {
+        var existingRestaurant = await _restaurantRepository.GetByIdAsync(restaurant.RestaurantID);
 
-                await _restaurantRepository.UpdateAsync(existingRestaurant);
+        if (existingRestaurant != null)
+        {
+            existingRestaurant.Name = restaurant.Name;
+            existingRestaurant.Address = restaurant.Address;
+            existingRestaurant.PhoneNumber = restaurant.PhoneNumber;
+            existingRestaurant.OperatingHours = restaurant.OperatingHours;
 
-                return existingRestaurant;
-            }
-            else
-            {
-                throw new Exception("Restaurant not found");
-            }
+            await _restaurantRepository.UpdateAsync(existingRestaurant);
+
+            return existingRestaurant;
         }
-    public async Task<List<Restaurant>> GetAllRestaurantsAsync()
+        else
+        {
+            throw new Exception("Restaurant not found");
+        }
+    }
+
+    public async Task<List<Restaurant>> GetAllAsync()
     {
         return await _restaurantRepository.GetListAsync();
     }
-    public async Task<Restaurant> GetByIDRestaurantsAsync(int id)
+
+    public async Task<Restaurant> GetByIdAsync(int id)
     {
-        var restaurant = _restaurantRepository.GetTableNoTracking()
-                                        .Where(x => x.RestaurantID.Equals(id))
-                                        .FirstOrDefault();
-        return restaurant;
-    }
-    public async Task<bool> IsNameExist(string name, int id)
-    {
-        var result = await _restaurantRepository.GetTableNoTracking().Where(x => x.Name.Equals(name) & !x.RestaurantID.Equals(id)).FirstOrDefaultAsync();
-        if (result is null) return false;
-        return true;
+        return await _restaurantRepository.GetByIdAsync(id);
     }
 
+    public async Task<bool> IsNameExist(string name, int id)
+    {
+        var result = await _restaurantRepository.GetTableNoTracking()
+            .FirstOrDefaultAsync(x => x.Name.Equals(name) && !x.RestaurantID.Equals(id));
+
+        return result != null;
+    }
 }
