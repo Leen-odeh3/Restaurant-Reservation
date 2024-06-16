@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RestaurantReservation.API.Base;
 using RestaurantReservation.Core.Features.Tables.Commands.Models;
+using RestaurantReservation.Core.Features.Tables.Queries.Models;
 using RestaurantReservation.Domain.AppMetaData;
 
 namespace RestaurantReservation.API.Controllers
@@ -12,12 +13,12 @@ namespace RestaurantReservation.API.Controllers
         {
         }
 
-       /* [HttpGet(Router.TableRouting.List)]
+       [HttpGet(Router.TableRouting.List)]
         public async Task<IActionResult> GetAllTables()
         {
             var response = await Mediator.Send(new GetTableListQuery());
             return Ok(response);
-        } */
+        } 
 
       /*  [HttpGet(Router.TableRouting.GetByID)]
         public async Task<IActionResult> GetByIDTable([FromRoute] int id)

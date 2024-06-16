@@ -23,7 +23,6 @@
 
   <ItemGroup>
     <Folder Include="Features\Tables\Commands\Validators\" />
-    <Folder Include="Features\Tables\Queries\" />
   </ItemGroup>
 
 </Project>

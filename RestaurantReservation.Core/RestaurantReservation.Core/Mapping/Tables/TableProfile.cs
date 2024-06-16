@@ -4,7 +4,8 @@ public partial class TableProfile : Profile
 {
     public TableProfile()
     {
-      AddTableMapping(); 
+      AddTableMapping();
+        GetTableListMapping();
     }
    
 }

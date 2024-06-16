@@ -16,7 +16,6 @@ public class TableService : ITableService
         await _tableRepository.AddAsync(Table);
         return Table;
     }
-
     public async Task<string> DeleteAsync(Table Table)
     {
         var trans = _tableRepository.BeginTransaction();
@@ -33,7 +32,6 @@ public class TableService : ITableService
             return "Falied";
         }
     }
-
     public async Task<Table> EditTablesAsync(Table Table)
     {
         var existingTable = await _tableRepository.GetByIdAsync(Table.TableID);
@@ -53,12 +51,10 @@ public class TableService : ITableService
             throw new Exception("Table not found");
         }
     }
-
     public async Task<List<Table>> GetAllTablesAsync()
     {
         return await _tableRepository.GetListAsync();
     }
-
     public async Task<Table> GetByIDTableAsync(int id)
     {
         return await _tableRepository.GetByIdAsync(id); 
