@@ -4,10 +4,12 @@ using RestaurantReservation.Core.Bases;
 using RestaurantReservation.Core.Features.Tables.Commands.Models;
 using RestaurantReservation.Domain.Entities;
 using RestaurantReservation.Services.Abstracts;
+using RestaurantReservation.Services.Implementations;
 
 namespace RestaurantReservation.Core.Features.Tables.Commands.Handlers;
 public class TableCommandHandler : ResponseHandler,
-                                   IRequestHandler<AddTableCommand, Response<Table>>
+                                   IRequestHandler<AddTableCommand, Response<Table>>,
+                                   IRequestHandler<EditTableCommand, Response<Table>>
 {
     private readonly ITableService _tableService;
     private readonly IMapper _mapper;
@@ -25,6 +27,16 @@ public class TableCommandHandler : ResponseHandler,
         var result = await _tableService.AddTablesAsync(mapper);
 
         if (result is not null) return Created(result);
+        return BadRequest<Table>(result);
+    }
+
+    public async Task<Response<Table>> Handle(EditTableCommand request, CancellationToken cancellationToken)
+    {
+        var mapper = _mapper.Map<Table>(request);
+
+        var result = await _tableService.EditTablesAsync(mapper);
+
+        if (result is not null) return Success(result);
         return BadRequest<Table>(result);
     }
 }

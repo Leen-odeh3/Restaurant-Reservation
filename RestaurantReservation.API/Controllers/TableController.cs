@@ -34,12 +34,12 @@ namespace RestaurantReservation.API.Controllers
             return NewResult(response);
         }
 
-       /* [HttpPut(Router.TableRouting.Edit)]
+        [HttpPut(Router.TableRouting.Edit)]
         public async Task<IActionResult> Edit([FromBody] EditTableCommand command)
         {
             var response = await Mediator.Send(command);
             return NewResult(response);
-        }*/
+        }
 
      /*   [HttpDelete(Router.TableRouting.Delete)]
         public async Task<IActionResult> Delete([FromRoute] int id)

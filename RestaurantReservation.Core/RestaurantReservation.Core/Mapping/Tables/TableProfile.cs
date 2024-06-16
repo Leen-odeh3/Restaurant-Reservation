@@ -5,7 +5,8 @@ public partial class TableProfile : Profile
     public TableProfile()
     {
       AddTableMapping();
-        GetTableListMapping();
+      GetTableListMapping();
+      EditTableMapping();
     }
    
 }
