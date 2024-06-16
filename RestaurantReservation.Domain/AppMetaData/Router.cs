@@ -29,4 +29,15 @@ public static class Router
         public const string Paginated = Prefix + "/Paginated";
 
     }
+    public static class MenuItemRouting
+    {
+        public const string Prefix = Rule + "MenuItem";
+        public const string List = Prefix + "/List";
+        public const string GetByID = Prefix + SignleRoute;
+        public const string Create = Prefix + "/Create";
+        public const string Edit = Prefix + "/Edit";
+        public const string Delete = Prefix + "/{id}";
+        public const string Paginated = Prefix + "/Paginated";
+
+    }
 }

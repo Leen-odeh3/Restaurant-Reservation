@@ -2,7 +2,6 @@
 using RestaurantReservation.Domain.Entities;
 using RestaurantReservation.Infrustructure.Abstracts;
 using RestaurantReservation.Services.Abstracts;
-using Serilog;
 
 namespace RestaurantReservation.Services.Implementations;
 public class RestaurantService : IRestaurantService

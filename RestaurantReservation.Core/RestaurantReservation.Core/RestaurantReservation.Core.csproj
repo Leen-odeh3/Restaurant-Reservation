@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Features\MenuItems\Commands\Validators\" />
     <Folder Include="Features\Tables\Commands\Validators\" />
   </ItemGroup>
 
