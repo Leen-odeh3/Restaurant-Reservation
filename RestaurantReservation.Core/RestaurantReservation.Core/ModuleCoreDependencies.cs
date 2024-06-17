@@ -3,6 +3,7 @@ using System.Reflection;
 using MediatR;
 using RestaurantReservation.Core.Behaviors;
 using FluentValidation;
+using RestaurantReservation.Core.Bases;
 
 namespace RestaurantReservation.Core;
 
@@ -15,7 +16,7 @@ public static class ModuleCoreDependencies
 
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
-       
+        services.AddScoped<ResponseHandler>();
 
         return services;
     }

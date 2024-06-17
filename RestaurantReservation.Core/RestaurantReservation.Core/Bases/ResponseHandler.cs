@@ -1,4 +1,6 @@
 ﻿
+using System.Net;
+
 namespace RestaurantReservation.Core.Bases;
 public class ResponseHandler
 {
@@ -7,6 +9,16 @@ public class ResponseHandler
     {
 
     }
+    public Response<T> Fail<T>(string errorMessage)
+    {
+        return new Response<T>()
+        {
+            Data = default(T),
+            StatusCode = System.Net.HttpStatusCode.InternalServerError,
+            Succeeded = false,
+            Message = errorMessage ?? "Operation failed",
+        };
+    }
     public Response<T> Deleted<T>()
     {
         return new Response<T>()
@@ -14,6 +26,16 @@ public class ResponseHandler
             StatusCode = System.Net.HttpStatusCode.OK,
             Succeeded = true,
             Message = "Deleted Successfully"
+        };
+    }
+    public Response<T> Success<T>(T entity)
+    {
+        return new Response<T>()
+        {
+            Data = entity,
+            StatusCode = HttpStatusCode.OK,
+            Succeeded = true,
+            Message = "Operation successful"
         };
     }
     public Response<T> Success<T>(T entity, object Meta = null)
@@ -77,6 +99,16 @@ public class ResponseHandler
             StatusCode = System.Net.HttpStatusCode.BadRequest,
             Succeeded = false,
             Message = msg ?? "Bad Request", 
+        };
+    }
+    public Response<T> Success<T>(T data, string message = null)
+    {
+        return new Response<T>
+        {
+            Data = data,
+            StatusCode = HttpStatusCode.OK,
+            Succeeded = true,
+            Message = message ?? "Operation successful"
         };
     }
 

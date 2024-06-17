@@ -10,7 +10,8 @@ public static class ModuleServiceDependencies
         services.AddTransient<IRestaurantService, RestaurantService>();
         services.AddTransient<ITableService, TableService>();
         services.AddTransient<IMenuItemService, MenuItemService>();
-
+        services.AddScoped<IEmployeeService, EmployeeService>();
+      
 
         return services;
     }

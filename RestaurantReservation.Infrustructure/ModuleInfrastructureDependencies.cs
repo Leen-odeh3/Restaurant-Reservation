@@ -11,6 +11,7 @@ public static class ModuleInfrastructureDependencies
             services.AddTransient(typeof(IGenericRepositoryAsync<>), typeof(GenericRepositoryAsync<>));
             services.AddTransient<ITableRepository, TableRepository>();
             services.AddTransient<IMenuItemRepository, MenuItemRepository>();
+            services.AddTransient<IEmployeeRepository, EmployeeRepository>();
 
         return services;
         }
