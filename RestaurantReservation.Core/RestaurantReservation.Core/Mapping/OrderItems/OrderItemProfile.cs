@@ -1,4 +1,15 @@
-﻿namespace RestaurantReservation.Core.Mapping.MenueItems;
-public partial class OrderItemProfile
+﻿using AutoMapper;
+using RestaurantReservation.Core.Features.OrderItems.Commads.Commands;
+using RestaurantReservation.Core.Features.OrderItems.Queries.Results;
+using RestaurantReservation.Domain.Entities;
+
+namespace RestaurantReservation.Core.Mapping.MenueItems;
+public partial class OrderItemProfile :Profile
 {
+    public OrderItemProfile()
+    {
+        CreateMap<AddOrderItemCommand, OrderItem>();
+        CreateMap<UpdateOrderItemCommand, OrderItem>();
+        CreateMap<OrderItem, GetOrderItemListResponse>();
+    }
 }

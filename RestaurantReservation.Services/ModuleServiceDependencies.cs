@@ -17,6 +17,7 @@ public static class ModuleServiceDependencies
         services.AddScoped<IReservationService, ReservationService>();
 
 
+
         return services;
     }
 }

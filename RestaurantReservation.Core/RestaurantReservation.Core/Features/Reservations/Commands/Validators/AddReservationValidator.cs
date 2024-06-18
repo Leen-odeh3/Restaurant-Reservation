@@ -3,7 +3,7 @@ using RestaurantReservation.Core.Features.OrderItems.Commands.Models;
 
 namespace RestaurantReservation.Core.Features.OrderItems.Commands.Validators;
 
-public class AddReservationValidator : AbstractValidator<AddReservationCommand>
+public class AddReservationValidator : AbstractValidator<AddOrderItemCommand>
 {
     public AddReservationValidator()
     {

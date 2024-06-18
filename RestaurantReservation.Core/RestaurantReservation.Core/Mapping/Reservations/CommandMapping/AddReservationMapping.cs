@@ -7,6 +7,6 @@ public partial class ReservationProfile : Profile
 {
     public void AddReservationMapping()
     {
-        CreateMap<AddReservationCommand, Reservation>();
+        CreateMap<AddOrderItemCommand, Reservation>();
     }
 }
