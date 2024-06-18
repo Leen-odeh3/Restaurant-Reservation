@@ -12,6 +12,7 @@ public static class ModuleInfrastructureDependencies
             services.AddTransient<ITableRepository, TableRepository>();
             services.AddTransient<IMenuItemRepository, MenuItemRepository>();
             services.AddTransient<IEmployeeRepository, EmployeeRepository>();
+            services.AddTransient<ICustomerRepository, CustomerRepository>();
 
         return services;
         }

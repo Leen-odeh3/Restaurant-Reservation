@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-using RestaurantReservation.Core.Features.Emoloyees.Queries.Results;
-using RestaurantReservation.Core.Features.MenuItems.Queries.Results;
+﻿using RestaurantReservation.Core.Features.Emoloyees.Queries.Results;
 using RestaurantReservation.Domain.Entities;
 namespace RestaurantReservation.Core.Mapping.Employees;
 public partial class EmployeeProfile
