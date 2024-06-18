@@ -1,45 +1,63 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using RestaurantReservation.Domain.Entities;
+using RestaurantReservation.Infrustructure.Abstracts;
 using RestaurantReservation.Services.Abstracts;
 
 namespace RestaurantReservation.Services.Implementations;
+
 public class OrderItemService : IOrderItemService
 {
-    private readonly DbContext _dbContext;
+    private readonly IOrderItemRepository _orderItemRepository;
 
-    public OrderItemService(DbContext dbContext)
+    public OrderItemService(IOrderItemRepository orderItemRepository)
     {
-        _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+        _orderItemRepository = orderItemRepository ?? throw new ArgumentNullException(nameof(orderItemRepository));
     }
 
     public async Task<List<OrderItem>> GetAllAsync()
     {
-        return await _dbContext.Set<OrderItem>().ToListAsync();
+        return await _orderItemRepository.GetListAsync();
     }
 
     public async Task<OrderItem> GetByIdAsync(int id)
     {
-        return await _dbContext.Set<OrderItem>().FindAsync(id);
+        return await _orderItemRepository.GetByIdAsync(id);
     }
 
     public async Task<OrderItem> AddAsync(OrderItem entity)
     {
-        _dbContext.Set<OrderItem>().Add(entity);
-        await _dbContext.SaveChangesAsync();
-        return entity;
+        return await _orderItemRepository.AddAsync(entity);
     }
 
     public async Task<OrderItem> EditAsync(OrderItem entity)
     {
-        _dbContext.Entry(entity).State = EntityState.Modified;
-        await _dbContext.SaveChangesAsync();
-        return entity;
+        var existingOrderItem = await _orderItemRepository.GetByIdAsync(entity.OrderItemID);
+        if (existingOrderItem == null)
+        {
+            throw new Exception($"Order item with ID {entity.OrderItemID} not found.");
+        }
+        existingOrderItem.OrderID = entity.OrderID;
+        existingOrderItem.MenuItemID = entity.MenuItemID;
+        existingOrderItem.Quantity = entity.Quantity;
+
+        await _orderItemRepository.UpdateAsync(existingOrderItem);
+
+        return existingOrderItem;
     }
+
 
     public async Task<string> DeleteAsync(OrderItem entity)
     {
-        _dbContext.Set<OrderItem>().Remove(entity);
-        await _dbContext.SaveChangesAsync();
+        var existingOrderItem = await _orderItemRepository.GetByIdAsync(entity.OrderItemID);
+        if (existingOrderItem == null)
+        {
+            throw new Exception($"Order item with ID {entity.OrderItemID} not found.");
+        }
+
+        await _orderItemRepository.DeleteAsync(existingOrderItem);
+
         return "Deleted successfully";
     }
 }
