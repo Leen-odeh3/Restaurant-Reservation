@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using MediatR;
 using RestaurantReservation.Core.Bases;
-using RestaurantReservation.Core.Features.OrderItems.Commads.Commands;
+using RestaurantReservation.Core.Features.OrderItems.Commands.Models;
 using RestaurantReservation.Domain.Entities;
 using RestaurantReservation.Services.Abstracts;
 
-namespace RestaurantReservation.Core.Features.OrderItems.Commads.Handlers;
+namespace RestaurantReservation.Core.Features.OrderItems.Commands.Handlers;
 public class OrderItemCommandHandler : ResponseHandler,
         IRequestHandler<AddOrderItemCommand, Response<OrderItem>>,
         IRequestHandler<UpdateOrderItemCommand, Response<OrderItem>>,

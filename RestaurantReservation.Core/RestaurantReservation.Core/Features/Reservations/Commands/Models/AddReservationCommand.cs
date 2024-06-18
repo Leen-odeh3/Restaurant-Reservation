@@ -3,7 +3,7 @@ using RestaurantReservation.Core.Bases;
 using RestaurantReservation.Domain.Entities;
 
 namespace RestaurantReservation.Core.Features.OrderItems.Commands.Models;
-public class AddOrderItemCommand : IRequest<Response<Reservation>>
+public class AddReservationCommand : IRequest<Response<Reservation>>
 {
     public int CustomerID { get; set; }       
     public int RestaurantID { get; set; }    

@@ -7,9 +7,9 @@ using RestaurantReservation.Services.Abstracts;
 
 namespace RestaurantReservation.Core.Features.Reservations.Commands.Handlers;
 public class ReservationCommandHandler : ResponseHandler,
-    IRequestHandler<AddOrderItemCommand, Response<Reservation>>,
+    IRequestHandler<AddReservationCommand, Response<Reservation>>,
     IRequestHandler<EditReservationCommand, Response<Reservation>>,
-    IRequestHandler<DeleteOrderItemCommand, Response<string>>
+    IRequestHandler<DeleteReservationCommand, Response<string>>
 {
     private readonly IReservationService _reservationService;
     private readonly IMapper _mapper;
@@ -20,7 +20,7 @@ public class ReservationCommandHandler : ResponseHandler,
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
     }
 
-    public async Task<Response<Reservation>> Handle(AddOrderItemCommand request, CancellationToken cancellationToken)
+    public async Task<Response<Reservation>> Handle(AddReservationCommand request, CancellationToken cancellationToken)
     {
         var reservation = _mapper.Map<Reservation>(request);
 
@@ -50,7 +50,7 @@ public class ReservationCommandHandler : ResponseHandler,
         }
     }
 
-    public async Task<Response<string>> Handle(DeleteOrderItemCommand request, CancellationToken cancellationToken)
+    public async Task<Response<string>> Handle(DeleteReservationCommand request, CancellationToken cancellationToken)
     {
         var reservation = await _reservationService.GetByIdAsync(request.ReservationID);
 
@@ -67,4 +67,6 @@ public class ReservationCommandHandler : ResponseHandler,
             return Fail<string>($"Failed to delete Reservation: {ex.Message}");
         }
     }
+
+    
 }

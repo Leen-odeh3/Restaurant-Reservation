@@ -2,11 +2,11 @@
 using RestaurantReservation.Core.Bases;
 
 namespace RestaurantReservation.Core.Features.OrderItems.Commands.Models;
-public class DeleteOrderItemCommand : IRequest<Response<string>>
+public class DeleteReservationCommand : IRequest<Response<string>>
 {
     public int ReservationID { get; set; }  
 
-    public DeleteOrderItemCommand(int reservationId)
+    public DeleteReservationCommand(int reservationId)
     {
         ReservationID = reservationId;
     }
