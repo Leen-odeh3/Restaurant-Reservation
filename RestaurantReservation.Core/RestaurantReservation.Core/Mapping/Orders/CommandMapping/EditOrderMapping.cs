@@ -1,7 +1,8 @@
-﻿using RestaurantReservation.Core.Features.Orders.Commands.Models;
+﻿using AutoMapper;
+using RestaurantReservation.Core.Features.Orders.Commands.Models;
 using RestaurantReservation.Domain.Entities;
 namespace RestaurantReservation.Core.Mapping.Orders;
-public partial class OrderProfile
+public partial class OrderProfile : Profile
 {
     public void EditOrderMapping()
     {

@@ -24,6 +24,8 @@
   <ItemGroup>
     <Folder Include="Features\MenuItems\Commands\Validators\" />
     <Folder Include="Features\Tables\Commands\Validators\" />
+    <Folder Include="Mapping\OrderItems\CommandMapping\" />
+    <Folder Include="Mapping\OrderItems\QueryMapping\" />
   </ItemGroup>
 
 </Project>

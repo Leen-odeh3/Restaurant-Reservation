@@ -13,6 +13,8 @@ public static class ModuleServiceDependencies
         services.AddScoped<IEmployeeService, EmployeeService>();
         services.AddScoped<ICustomerService, CustomerService>();
         services.AddScoped<IOrderService, OrderService>();
+        services.AddScoped<IOrderItemService, OrderItemService>();
+        services.AddScoped<IReservationService, ReservationService>();
 
 
         return services;
