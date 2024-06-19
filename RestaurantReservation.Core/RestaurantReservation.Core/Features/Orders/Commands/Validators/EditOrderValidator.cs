@@ -17,6 +17,5 @@ public class EditOrderValidator : AbstractValidator<EditOrderCommand>
     {
         RuleFor(x => x.ReservationID).NotEmpty().WithMessage("Reservation ID is required.");
         RuleFor(x => x.EmployeeID).NotEmpty().WithMessage("Employee ID is required.");
-        RuleFor(x => x.TotalAmount).GreaterThan(0).WithMessage("Total amount must be greater than 0.");
     }
 }

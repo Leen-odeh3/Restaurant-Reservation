@@ -7,6 +7,7 @@ public partial class OrderProfile : Profile
         public void GetOrderListMapping()
         {
             CreateMap<Order, GetOrderListResponse>()
-                .ForMember(dest => dest.OrderID, opt => opt.MapFrom(src => src.OrderID));
+                .ForMember(dest => dest.OrderID, opt => opt.MapFrom(src => src.OrderID))
+                .ForMember(dest => dest.EmployeeName, opt => opt.MapFrom(src => $"{src.employee.FirstName} {src.employee.LastName}"));
         }
 }
