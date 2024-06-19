@@ -5,5 +5,6 @@ public class GetOrderItemListResponse
     public int OrderID { get; set; }
     public int MenuItemID { get; set; }
     public int Quantity { get; set; }
+    public String RestaurantName{ get; set; }
 
 }

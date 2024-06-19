@@ -9,8 +9,8 @@ public partial class OrderItemProfile :Profile
 {
     public OrderItemProfile()
     {
+        GetOrderItemListMapping();
         CreateMap<AddOrderItemCommand, OrderItem>();
         CreateMap<UpdateOrderItemCommand, OrderItem>();
-        CreateMap<OrderItem, GetOrderItemListResponse>();
     }
 }
