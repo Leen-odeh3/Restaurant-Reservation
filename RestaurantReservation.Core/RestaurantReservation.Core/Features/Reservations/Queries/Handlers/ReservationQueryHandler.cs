@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using MediatR;
 using RestaurantReservation.Core.Bases;
-using RestaurantReservation.Core.Features.OrderItems.Queries.Models;
-using RestaurantReservation.Core.Features.OrderItems.Queries.Results;
+using RestaurantReservation.Core.Features.Reservations.Queries.Models;
+using RestaurantReservation.Core.Features.Reservations.Queries.Results;
 using RestaurantReservation.Services.Abstracts;
 
 

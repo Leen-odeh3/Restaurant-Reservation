@@ -1,4 +1,5 @@
-﻿using RestaurantReservation.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using RestaurantReservation.Domain.Entities;
 using RestaurantReservation.Infrustructure.Abstracts;
 using RestaurantReservation.Infrustructure.Data;
 
@@ -11,5 +12,9 @@ internal class ReservationRepository : GenericRepositoryAsync<Reservation>, IRes
     public ReservationRepository(AppDbContext context) : base(context)
     {
         _context = context;
+    }
+    public async Task<List<Reservation>> GetListAsync()
+    {
+        return await _context.Reservations.Include(e => e.customer).Include(m=>m.restaurant).ToListAsync();
     }
 }

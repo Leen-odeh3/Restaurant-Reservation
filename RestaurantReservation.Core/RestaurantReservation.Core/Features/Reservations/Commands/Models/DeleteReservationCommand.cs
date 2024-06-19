@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using RestaurantReservation.Core.Bases;
 
-namespace RestaurantReservation.Core.Features.OrderItems.Commands.Models;
+namespace RestaurantReservation.Core.FeaturesReservations.Commands.Models;
 public class DeleteReservationCommand : IRequest<Response<string>>
 {
     public int ReservationID { get; set; }  

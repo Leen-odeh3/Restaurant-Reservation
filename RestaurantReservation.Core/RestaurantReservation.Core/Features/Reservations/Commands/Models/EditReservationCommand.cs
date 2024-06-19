@@ -2,7 +2,7 @@
 using RestaurantReservation.Core.Bases;
 using RestaurantReservation.Domain.Entities;
 
-namespace RestaurantReservation.Core.Features.OrderItems.Commands.Models;
+namespace RestaurantReservation.Core.FeaturesReservations.Commands.Models;
 public class EditReservationCommand : IRequest<Response<Reservation>>
 {
     public int ReservationID { get; set; } 

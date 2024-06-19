@@ -1,11 +1,10 @@
 ﻿using AutoMapper;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RestaurantReservation.API.Base;
-using RestaurantReservation.Core.Features.OrderItems.Commands;
-using RestaurantReservation.Core.Features.OrderItems.Commands.Models;
-using RestaurantReservation.Core.Features.OrderItems.Queries.Models;
+using RestaurantReservation.Core.Features.Reservations.Commands.Models;
+using RestaurantReservation.Core.Features.Reservations.Queries.Models;
+using RestaurantReservation.Core.FeaturesReservations.Commands.Models;
 using RestaurantReservation.Domain.AppMetaData;
 
 namespace RestaurantReservation.API.Controllers
@@ -30,7 +29,7 @@ namespace RestaurantReservation.API.Controllers
         }
 
         [HttpPost(Router.ReservationRouting.Create)]
-        public async Task<IActionResult> Create([FromBody] AddOrderItemCommand command)
+        public async Task<IActionResult> Create([FromBody] AddReservationCommand command)
         {
             var response = await _mediator.Send(command);
             return NewResult(response);
@@ -46,7 +45,7 @@ namespace RestaurantReservation.API.Controllers
         [HttpDelete(Router.ReservationRouting.Delete)]
         public async Task<IActionResult> Delete(int id)
         {
-            var response = await _mediator.Send(new DeleteOrderItemCommand(id));
+            var response = await _mediator.Send(new DeleteReservationCommand(id));
             return NewResult(response);
         }
     }

@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using RestaurantReservation.Core.Features.OrderItems.Commands.Models;
+using RestaurantReservation.Core.FeaturesReservations.Commands.Models;
 using RestaurantReservation.Services.Abstracts;
 
 
