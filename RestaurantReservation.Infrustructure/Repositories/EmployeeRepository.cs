@@ -12,11 +12,15 @@ public class EmployeeRepository : GenericRepositoryAsync<Employee>, IEmployeeRep
     {
         _context = context;
     }
-
+    public async Task<List<Employee>> GetListAsync()
+    {
+        return await _context.Employees.Include(e => e.Restaurant).ToListAsync();
+    }
     public async Task<List<Employee>> GetEmployeesByRestaurantAsync(int restaurantId)
     {
-        return await _context.Employees
+        return await _context.Employees.Include(e => e.Restaurant)
             .Where(e => e.RestaurantID == restaurantId)
             .ToListAsync();
+
     }
 }
