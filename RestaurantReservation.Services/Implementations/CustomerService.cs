@@ -68,19 +68,20 @@ public class CustomerService : ICustomerService
         return await _customerRepository.GetByIdAsync(id);
     }
 
-    public async Task<bool> IsCustomerPhoneExist(string phone, int id)
+    public async Task<bool> IsCustomerPhoneExist(string phone)
     {
         var result = await _customerRepository.GetTableNoTracking()
-             .FirstOrDefaultAsync(x => x.CustomerPhoneNumber.Equals(phone) && !x.CustomerID.Equals(id));
+            .FirstOrDefaultAsync(x => x.CustomerPhoneNumber.Equals(phone));
 
         return result != null;
     }
 
-    public async Task<bool> IsEmailExist(string email, int id)
+    public async Task<bool> IsEmailExist(string email)
     {
         var result = await _customerRepository.GetTableNoTracking()
-            .FirstOrDefaultAsync(x => x.Email.Equals(email) && !x.CustomerID.Equals(id));
+            .FirstOrDefaultAsync(x => x.Email.Equals(email));
 
         return result != null;
     }
+
 }

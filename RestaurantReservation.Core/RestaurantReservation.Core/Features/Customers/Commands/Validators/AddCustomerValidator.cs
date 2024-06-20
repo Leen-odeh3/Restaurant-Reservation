@@ -9,7 +9,7 @@ public class AddCustomerValidator : AbstractValidator<AddCustomerCommand>
     {
         _customerService = customerService;
         ApplyValidationRules();
-        //ApplyCustomValidationsRules();
+        ApplyCustomValidationsRules();
     }
 
     private void ApplyValidationRules()
@@ -32,14 +32,14 @@ public class AddCustomerValidator : AbstractValidator<AddCustomerCommand>
             .MaximumLength(18).WithMessage("Phone number cannot exceed 18 characters.");
     }
 
-    /*public void ApplyCustomValidationsRules()
+    public void ApplyCustomValidationsRules()
     {
         RuleFor(x => x.Email)
             .MustAsync(async (Key, CancellationToken) => !await _customerService.IsEmailExist(Key))
-            .WithMessage("");
+            .WithMessage("Email already exists.");
         RuleFor(x => x.CustomerPhoneNumber)
            .MustAsync(async (Key, CancellationToken) => !await _customerService.IsCustomerPhoneExist(Key))
-           .WithMessage("");
-    }*/
+           .WithMessage("Phone number already exists.");
+    }
 
 }

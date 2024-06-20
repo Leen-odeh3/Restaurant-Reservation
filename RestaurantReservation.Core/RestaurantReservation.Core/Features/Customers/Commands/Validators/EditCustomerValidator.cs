@@ -39,7 +39,12 @@ public class EditCustomerValidator : AbstractValidator<EditCustomerCommand>
     {
         RuleFor(x => x.Email)
             .MustAsync(async (model, email, cancellationToken) =>
-                !await _customerService.IsEmailExist(email, model.Id))
+                !await _customerService.IsEmailExist(email))
             .WithMessage("Email must be unique.");
-    }
+   
+        RuleFor(x => x.CustomerPhoneNumber)
+            .MustAsync(async (model,phone, cancellationToken) =>
+                !await _customerService.IsEmailExist(phone))
+            .WithMessage("Email must be unique.");
+   }  
 }
