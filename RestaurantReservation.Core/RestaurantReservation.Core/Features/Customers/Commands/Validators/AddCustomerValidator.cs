@@ -1,11 +1,15 @@
 ﻿using FluentValidation;
 using RestaurantReservation.Core.Features.Customers.Commands.Models;
+using RestaurantReservation.Services.Abstracts;
 namespace RestaurantReservation.Core.Features.Customers.Commands.Validators;
 public class AddCustomerValidator : AbstractValidator<AddCustomerCommand>
 {
-    public AddCustomerValidator()
+    private readonly ICustomerService _customerService;
+    public AddCustomerValidator(ICustomerService customerService)
     {
+        _customerService = customerService;
         ApplyValidationRules();
+        //ApplyCustomValidationsRules();
     }
 
     private void ApplyValidationRules()
@@ -27,4 +31,15 @@ public class AddCustomerValidator : AbstractValidator<AddCustomerCommand>
             .NotEmpty().WithMessage("Phone number is required.")
             .MaximumLength(18).WithMessage("Phone number cannot exceed 18 characters.");
     }
+
+    /*public void ApplyCustomValidationsRules()
+    {
+        RuleFor(x => x.Email)
+            .MustAsync(async (Key, CancellationToken) => !await _customerService.IsEmailExist(Key))
+            .WithMessage("");
+        RuleFor(x => x.CustomerPhoneNumber)
+           .MustAsync(async (Key, CancellationToken) => !await _customerService.IsCustomerPhoneExist(Key))
+           .WithMessage("");
+    }*/
+
 }

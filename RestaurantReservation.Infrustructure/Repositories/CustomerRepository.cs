@@ -12,12 +12,10 @@ public class CustomerRepository : GenericRepositoryAsync<Customer>, ICustomerRep
     {
         _context = context;
     }
-
-    public async Task<bool> IsEmailExist(string email, int id)
+    public async Task<List<Customer>> GetListAsync()
     {
-        var result = await _context.Customers
-            .AnyAsync(x => x.Email.Equals(email) && !x.CustomerID.Equals(id));
-
-        return result;
+        return await _context.Customers.Include(e => e.Reservations)
+            .ThenInclude(xx=>xx.Table).ThenInclude(xx=>xx.Restaurant)
+            .AsSplitQuery().ToListAsync();
     }
 }

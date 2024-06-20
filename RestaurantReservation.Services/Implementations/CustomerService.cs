@@ -68,6 +68,14 @@ public class CustomerService : ICustomerService
         return await _customerRepository.GetByIdAsync(id);
     }
 
+    public async Task<bool> IsCustomerPhoneExist(string phone, int id)
+    {
+        var result = await _customerRepository.GetTableNoTracking()
+             .FirstOrDefaultAsync(x => x.CustomerPhoneNumber.Equals(phone) && !x.CustomerID.Equals(id));
+
+        return result != null;
+    }
+
     public async Task<bool> IsEmailExist(string email, int id)
     {
         var result = await _customerRepository.GetTableNoTracking()
