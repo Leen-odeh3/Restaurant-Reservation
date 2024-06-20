@@ -18,7 +18,6 @@ public class OrderService : IOrderService
         await _orderRepository.AddAsync(order);
         return order;
     }
-
     public async Task<string> DeleteAsync(Order order)
     {
         var trans = _orderRepository.BeginTransaction();
@@ -60,11 +59,36 @@ public class OrderService : IOrderService
 
     public async Task<List<Order>> GetAllAsync()
     {
-        return await _orderRepository.GetListAsync();
+        var orders = await _orderRepository.GetListAsync();
+
+        foreach (var order in orders)
+        {
+            order.TotalAmount = await CalculateTotalAmount(order.OrderID); 
+        }
+
+        return orders;
+    }
+    private async Task<decimal> CalculateTotalAmount(int orderId)
+    {
+        var orderItems = await _orderRepository.GetOrderItemsAsync(orderId);
+        decimal totalAmount = 0;
+
+        foreach (var item in orderItems)
+        {
+            decimal itemQuantity = (decimal)item.Quantity;
+            decimal itemPrice = (decimal)item.Item.Price;
+
+            decimal itemTotal = itemQuantity * itemPrice;
+
+            totalAmount += itemTotal;
+        }
+
+        return totalAmount;
     }
 
     public async Task<Order> GetByIdAsync(int id)
     {
         return await _orderRepository.GetByIdAsync(id);
     }
+
 }
