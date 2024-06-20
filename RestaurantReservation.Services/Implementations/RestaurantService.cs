@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RestaurantReservation.Domain.Entities;
 using RestaurantReservation.Infrustructure.Abstracts;
+using RestaurantReservation.Infrustructure.Repositories;
 using RestaurantReservation.Services.Abstracts;
 
 namespace RestaurantReservation.Services.Implementations;
@@ -67,10 +68,10 @@ public class RestaurantService : IRestaurantService
         return await _restaurantRepository.GetByIdAsync(id);
     }
 
-    public async Task<bool> IsNameExist(string name, int id)
+    public async Task<bool> IsRestaurantNameExist(string name)
     {
         var result = await _restaurantRepository.GetTableNoTracking()
-            .FirstOrDefaultAsync(x => x.Name.Equals(name) && !x.RestaurantID.Equals(id));
+          .FirstOrDefaultAsync(x => x.Name.Equals(name));
 
         return result != null;
     }

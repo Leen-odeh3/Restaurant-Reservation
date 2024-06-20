@@ -35,7 +35,7 @@ namespace RestaurantReservation.Core.Features.Restaurants.Commands.Validators
         {
             RuleFor(x => x.RestaurantName)
                 .MustAsync(async (model, name, cancellationToken) =>
-                    !await _restaurantService.IsNameExist(name, model.Id))
+                    !await _restaurantService.IsRestaurantNameExist(name))
                 .WithMessage("Restaurant name must be unique.");
         }
 
