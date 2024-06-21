@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using RestaurantReservation.Domain.Entities;
+using RestaurantReservation.Domain.Enums;
 using RestaurantReservation.Infrustructure.Abstracts;
 using RestaurantReservation.Services.Abstracts;
 
@@ -74,5 +75,29 @@ public class EmployeeService : IEmployeeService
         var managers = await _employeeRepository.GetListallmanagers();
         return managers;
     }
+    public IQueryable<Employee> FilterPaginatedQuerable(OrderingEnum orderingEnum, string search)
+    {
+        var querable = _employeeRepository.GetTableNoTracking().Include(x => x.Restaurant).AsQueryable();
+        if (search is not null)
+        {
+            querable = querable.Where(x => x.FirstName.Contains(search) || x.Restaurant.Name.Contains(search));
+        }
+        switch (orderingEnum)
+        {
+            case OrderingEnum.EmployeeID:
+                querable = querable.OrderBy(x =>x.EmployeeID);
+                break;
+            case OrderingEnum.FirstName:
+                querable = querable.OrderBy(x => x.FirstName);
+                break;
+            case OrderingEnum.RestaurantName:
+                querable = querable.OrderBy(x => x.Restaurant.Name);
+                break;
+            case OrderingEnum.LastName:
+                querable = querable.OrderBy(x => x.LastName);
+                break;
+        }
 
+        return querable;
+    }
 }

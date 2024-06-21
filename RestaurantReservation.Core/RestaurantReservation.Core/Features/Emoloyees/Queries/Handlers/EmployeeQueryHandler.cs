@@ -3,16 +3,22 @@ using MediatR;
 using RestaurantReservation.Core.Bases;
 using RestaurantReservation.Core.Features.Emoloyees.Queries.Moldels;
 using RestaurantReservation.Core.Features.Emoloyees.Queries.Results;
+using RestaurantReservation.Core.Features.Emoloyees.Queries.Resultsl;
+using RestaurantReservation.Core.Wrappers;
+using RestaurantReservation.Domain.Entities;
 using RestaurantReservation.Services.Abstracts;
+using System.Linq.Expressions;
 
 
 namespace RestaurantReservation.Core.Features.Emoloyees.Queries.Handlers
 {
     internal class EmployeeQueryHandler : 
-        IRequestHandler<GetEmployeeListQuery, Response<List<GetEmployeeListResponse>>>,
+         IRequestHandler<GetEmployeeListQuery, Response<List<GetEmployeeListResponse>>>,
          IRequestHandler<GetListAllManagers, Response<List<GetEmployeeListResponse>>>,
-        IRequestHandler<GetEmployeeAverageOrderAmountQuery, decimal>
-    {
+         IRequestHandler<GetEmployeeAverageOrderAmountQuery, decimal>,
+         IRequestHandler<GetEmployeePaginatedListQuery, PaginatedResult<GetEmployeePaginatedListResponse>>
+
+{
         private readonly IEmployeeService _employeeService;
         private readonly IMapper _mapper;
         private readonly ResponseHandler _responseHandler;
@@ -39,6 +45,14 @@ namespace RestaurantReservation.Core.Features.Emoloyees.Queries.Handlers
             {
                 return _responseHandler.Fail<List<GetEmployeeListResponse>>($"Failed to retrieve employees: {ex.Message}");
             }
+        }
+
+        public async Task<PaginatedResult<GetEmployeePaginatedListResponse>> Handle(GetEmployeePaginatedListQuery request, CancellationToken cancellationToken)
+        {
+            var FilterQuery = _employeeService.FilterPaginatedQuerable((Domain.Enums.OrderingEnum)request.OrderBy, request.Search);
+            var PaginatedList = await _mapper.ProjectTo<GetEmployeePaginatedListResponse>(FilterQuery).ToPaginatedListAsync(request.PageNumber, request.PageSize);
+            PaginatedList.Meta = new { Count = PaginatedList.Data.Count() };
+            return PaginatedList;
         }
 
         public async Task<Response<List<GetEmployeeListResponse>>> Handle(GetListAllManagers request, CancellationToken cancellationToken)

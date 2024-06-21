@@ -8,5 +8,6 @@ public partial class EmployeeProfile : Profile
         AddEmployeeMapping();
         EditEmployeeMapping();
         GetEmployeeMapping();
+        GetEmployeePaginationMapping();
     }
 }
