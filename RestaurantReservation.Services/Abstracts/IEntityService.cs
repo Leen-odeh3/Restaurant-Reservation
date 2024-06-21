@@ -6,4 +6,5 @@ public interface IEntityService<TEntity>
     Task<TEntity> AddAsync(TEntity entity);
     Task<TEntity> EditAsync(TEntity entity);
     Task<string> DeleteAsync(TEntity entity);
+   
 }

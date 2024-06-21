@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RestaurantReservation.Domain.Entities;
+using RestaurantReservation.Domain.Enums;
 using RestaurantReservation.Infrustructure.Abstracts;
 using RestaurantReservation.Infrustructure.Data;
 namespace RestaurantReservation.Infrustructure.Repositories;
@@ -22,5 +23,14 @@ public class EmployeeRepository : GenericRepositoryAsync<Employee>, IEmployeeRep
             .Where(e => e.RestaurantID == restaurantId)
             .ToListAsync();
 
+    }
+
+    public async Task<List<Employee>> GetListallmanagers()
+    {
+        var managers = await _context.Employees.Include(xx=>xx.Restaurant)
+                                    .Where(x => x.Position == EmployeePosition.Manager)
+                                    .ToListAsync();
+
+        return managers;
     }
 }

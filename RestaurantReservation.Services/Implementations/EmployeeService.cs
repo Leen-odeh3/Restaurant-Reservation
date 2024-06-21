@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using RestaurantReservation.Domain.Entities;
 using RestaurantReservation.Infrustructure.Abstracts;
 using RestaurantReservation.Services.Abstracts;
@@ -68,4 +69,10 @@ public class EmployeeService : IEmployeeService
 
         return result != null;
     }
+    public async Task<List<Employee>> GetallManagers()
+    {
+        var managers = await _employeeRepository.GetListallmanagers();
+        return managers;
+    }
+
 }

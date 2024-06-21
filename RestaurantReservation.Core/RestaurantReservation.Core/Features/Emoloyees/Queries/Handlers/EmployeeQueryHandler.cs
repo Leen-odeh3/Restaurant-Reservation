@@ -8,7 +8,9 @@ using RestaurantReservation.Services.Abstracts;
 
 namespace RestaurantReservation.Core.Features.Emoloyees.Queries.Handlers
 {
-    internal class EmployeeQueryHandler : IRequestHandler<GetEmployeeListQuery, Response<List<GetEmployeeListResponse>>>
+    internal class EmployeeQueryHandler : 
+        IRequestHandler<GetEmployeeListQuery, Response<List<GetEmployeeListResponse>>>,
+         IRequestHandler<GetListAllManagers, Response<List<GetEmployeeListResponse>>>
     {
         private readonly IEmployeeService _employeeService;
         private readonly IMapper _mapper;
@@ -25,6 +27,21 @@ namespace RestaurantReservation.Core.Features.Emoloyees.Queries.Handlers
             try
             {
                 var employees = await _employeeService.GetAllAsync();
+                var mappedEmployees = _mapper.Map<List<GetEmployeeListResponse>>(employees);
+
+                return _responseHandler.Success(mappedEmployees);
+            }
+            catch (Exception ex)
+            {
+                return _responseHandler.Fail<List<GetEmployeeListResponse>>($"Failed to retrieve employees: {ex.Message}");
+            }
+        }
+
+        public async Task<Response<List<GetEmployeeListResponse>>> Handle(GetListAllManagers request, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var employees = await _employeeService.GetallManagers();
                 var mappedEmployees = _mapper.Map<List<GetEmployeeListResponse>>(employees);
 
                 return _responseHandler.Success(mappedEmployees);

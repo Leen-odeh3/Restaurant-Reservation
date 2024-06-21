@@ -26,6 +26,12 @@ namespace RestaurantReservation.API.Controllers
             var response = await _mediator.Send(new GetEmployeeListQuery());
             return Ok(response);
         }
+        [HttpGet(Router.EmployeeRouting.manager)]
+        public async Task<IActionResult> GetAllManagersEmployee()
+        {
+            var response = await _mediator.Send(new GetListAllManagers());
+            return Ok(response);
+        }
 
         [HttpPost(Router.EmployeeRouting.Create)]
         public async Task<IActionResult> Create([FromBody] AddEmployeeCommand command)
