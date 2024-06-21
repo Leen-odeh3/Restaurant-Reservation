@@ -25,4 +25,11 @@ public class OrderRepository : GenericRepositoryAsync<Order>, IOrderRepository
             .Include(oi => oi.Item) 
             .ToListAsync();
     }
+    public Task<List<Order>> GetOrdersByEmployeeId(int employeeId)
+    {
+        return _context.Orders
+               .Include(o => o.employee) 
+               .Where(o => o.EmployeeID == employeeId)
+               .ToListAsync();
+    }
 }

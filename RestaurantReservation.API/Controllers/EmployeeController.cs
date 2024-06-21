@@ -53,5 +53,21 @@ namespace RestaurantReservation.API.Controllers
             var response = await _mediator.Send(new DeleteEmployeeCommand(id));
             return NewResult(response);
         }
+
+        [HttpGet("/api/employees/{employeeId}/averageOrderAmount")]
+        public async Task<IActionResult> GetEmployeeAverageOrderAmount(int employeeId)
+        {
+            try
+            {
+                var query = new GetEmployeeAverageOrderAmountQuery(employeeId);
+                var averageOrderAmount = await _mediator.Send(query);
+                return Ok(averageOrderAmount);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
     }
 }

@@ -1,5 +1,6 @@
 ﻿using RestaurantReservation.Domain.Entities;
 using RestaurantReservation.Infrustructure.Abstracts;
+using RestaurantReservation.Infrustructure.Repositories;
 using RestaurantReservation.Services.Abstracts;
 
 namespace RestaurantReservation.Services.Implementations;
@@ -89,6 +90,11 @@ public class OrderService : IOrderService
     public async Task<Order> GetByIdAsync(int id)
     {
         return await _orderRepository.GetByIdAsync(id);
+    }
+
+    public Task<List<Order>> GetOrdersByEmployeeId(int employeeId)
+    {
+        return _orderRepository.GetOrdersByEmployeeId(employeeId);
     }
 
 }
