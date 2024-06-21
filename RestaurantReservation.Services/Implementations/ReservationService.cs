@@ -59,5 +59,9 @@ public class ReservationService : IReservationService
 
         return "Deleted successfully";
     }
+    public async Task<List<Reservation>> GetReservationsByCustomerId(int customerId)
+    {
+        return await _reservationRepository.GetReservationsByCustomerId(customerId);
+    }
 }
 

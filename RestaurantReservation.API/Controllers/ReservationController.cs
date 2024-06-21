@@ -48,5 +48,19 @@ namespace RestaurantReservation.API.Controllers
             var response = await _mediator.Send(new DeleteReservationCommand(id));
             return NewResult(response);
         }
+
+        [HttpGet("reservations/customer/{customerId}")]
+        public async Task<ActionResult<List<IActionResult>>> GetReservationsByCustomerId(int customerId)
+        {
+            var query = new GetReservationsByCustomerQuery(customerId);
+            var reservations = await _mediator.Send(query);
+
+            if (reservations is null || reservations.Count == 0)
+            {
+                return NotFound("No reservations found for the customer.");
+            }
+
+            return Ok(reservations);
+        }
     }
 }

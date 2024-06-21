@@ -17,4 +17,11 @@ internal class ReservationRepository : GenericRepositoryAsync<Reservation>, IRes
     {
         return await _context.Reservations.Include(e => e.customer).Include(m=>m.restaurant).ToListAsync();
     }
+    public async Task<List<Reservation>> GetReservationsByCustomerId(int customerId)
+    {
+        return await _context.Reservations.Include(xx=>xx.restaurant)
+                             .Include(c=>c.customer)
+                             .Where(r => r.CustomerID == customerId)
+                             .ToListAsync();
+    }
 }
