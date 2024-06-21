@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using RestaurantReservation.API.Base;
 using RestaurantReservation.Core.Features.Customers.Commands.Models;
 using RestaurantReservation.Core.Features.Customers.Queries.Models;

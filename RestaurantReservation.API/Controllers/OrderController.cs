@@ -9,10 +9,6 @@ namespace RestaurantReservation.API.Controllers;
 [ApiController]
 public class OrderController : AppControllerBase
 {
-    public OrderController()
-    {
-    }
-
     [HttpGet(Router.OrderRouting.List)]
     public async Task<IActionResult> GetAllOrders()
     {

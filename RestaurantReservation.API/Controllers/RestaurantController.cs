@@ -9,11 +9,6 @@ namespace RestaurantReservation.API.Controllers;
 [ApiController]
 public class RestaurantController : AppControllerBase
 {
-    public RestaurantController()
-    {
-    
-    }
-
     [HttpGet(Router.RestaurantRouting.List)]
     public async Task<IActionResult> GetAllRestaurant()
     {
