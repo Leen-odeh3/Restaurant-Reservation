@@ -17,19 +17,18 @@ public class CustomerCommandHandler : ResponseHandler,
 
     public CustomerCommandHandler(ICustomerService customerService, IMapper mapper)
     {
-        _customerService = customerService ?? throw new ArgumentNullException(nameof(customerService));
-        _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+        _customerService = customerService;
+        _mapper = mapper;
     }
 
     public async Task<Response<Customer>> Handle(AddCustomerCommand request, CancellationToken cancellationToken)
     {
-        var mapper = _mapper.Map<Customer>(request);
+        var mappedCustomer = _mapper.Map<Customer>(request);
 
-        var result = await _customerService.AddAsync(mapper);
+        var result = await _customerService.AddAsync(mappedCustomer);
 
-        if (result != null)
-            return Created(result);
-        return BadRequest<Customer>(result);
+        return result is not null ? Success(result) : Fail<Customer>("Failed to add customer");
+
     }
 
     public async Task<Response<Customer>> Handle(EditCustomerCommand request, CancellationToken cancellationToken)
@@ -38,22 +37,17 @@ public class CustomerCommandHandler : ResponseHandler,
 
         var result = await _customerService.EditAsync(mapper);
 
-        if (result != null)
-            return Success(result);
-        return BadRequest<Customer>(result);
+        return result is not null ? Success(result) : Fail<Customer>("Failed to edit customer");
+
     }
 
     public async Task<Response<string>> Handle(DeleteCustomerCommand request, CancellationToken cancellationToken)
     {
         var customer = await _customerService.GetByIdAsync(request.Id);
-
-        if (customer == null)
+        if (customer is null)
             return NotFound<string>($"No customer found with Id: {request.Id}");
 
         var deletionResult = await _customerService.DeleteAsync(customer);
-
-        if (deletionResult == "Success")
-            return Deleted<string>();
-        return BadRequest<string>("Failed to delete customer");
+        return deletionResult == "Success" ? Deleted<string>() : Fail<string>("Failed to delete customer");
     }
 }

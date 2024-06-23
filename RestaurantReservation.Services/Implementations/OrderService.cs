@@ -12,7 +12,7 @@ public class OrderService : IOrderService
     private readonly IMapper _mapper;
     public OrderService(IOrderRepository orderRepository, IMapper mapper)
     {
-        _orderRepository = orderRepository ?? throw new ArgumentNullException(nameof(orderRepository));
+        _orderRepository = orderRepository;
         _mapper = mapper;
     }
 

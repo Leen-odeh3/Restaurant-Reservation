@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using RestaurantReservation.Domain.Entities;
 using RestaurantReservation.Infrustructure.Abstracts;
 using RestaurantReservation.Services.Abstracts;
@@ -10,8 +11,11 @@ public class CustomerService : ICustomerService
 {
     private readonly ICustomerRepository _customerRepository;
     private readonly IMapper _mapper;
-    public CustomerService(ICustomerRepository customerRepository,IMapper mapper)
+    private readonly ILogger<CustomerService> _logger;
+
+    public CustomerService(ICustomerRepository customerRepository,IMapper mapper ,ILogger<CustomerService> logger)
     {
+        _logger = logger;
         _mapper=mapper;
         _customerRepository = customerRepository ?? throw new ArgumentNullException(nameof(customerRepository));
     }
@@ -34,7 +38,7 @@ public class CustomerService : ICustomerService
         catch (Exception ex)
         {
             await trans.RollbackAsync();
-            Console.WriteLine($"Error deleting customer: {ex.Message}");
+            _logger.LogError($"Error deleting customer: {ex.Message}");
             return "Failed";
         }
     }

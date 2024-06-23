@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using RestaurantReservation.API.Base;
 using RestaurantReservation.Core.Features.Emoloyees.Commands.Models;
 using RestaurantReservation.Core.Features.Emoloyees.Queries.Moldels;
-using RestaurantReservation.Domain.AppMetaData;
 
 namespace RestaurantReservation.API.Controllers;
 
@@ -12,40 +11,40 @@ namespace RestaurantReservation.API.Controllers;
 public class EmployeeController : AppControllerBase
 {
 
-    [HttpGet(Router.EmployeeRouting.List)]
+    [HttpGet("Api/V1/Employee/List")]
     public async Task<IActionResult> GetAllEmployees()
     {
         var response = await Mediator.Send(new GetEmployeeListQuery());
         return Ok(response);
     }
-    [HttpGet(Router.EmployeeRouting.manager)]
+    [HttpGet("Api/V1/Employee/List/Manager")]
     public async Task<IActionResult> GetAllManagersEmployee()
     {
         var response = await Mediator.Send(new GetListAllManagers());
         return Ok(response);
     }
 
-    [HttpPost(Router.EmployeeRouting.Create)]
+    [HttpPost("Api/V1/Employee/Create")]
     public async Task<IActionResult> Create([FromBody] AddEmployeeCommand command)
     {
         var response = await Mediator.Send(command);
         return NewResult(response);
     }
 
-    [HttpPut(Router.EmployeeRouting.Edit)]
+    [HttpPut("Api/V1/Employee/Edit")]
     public async Task<IActionResult> Edit([FromBody] EditEmployeeCommand command)
     {
         var response = await Mediator.Send(command);
         return NewResult(response);
     }
 
-    [HttpDelete(Router.EmployeeRouting.Delete)]
+    [HttpDelete("Api/V1/Employee/{id}")]
     public async Task<IActionResult> Delete(int id)
     {
         var response = await Mediator.Send(new DeleteEmployeeCommand(id));
         return NewResult(response);
     }
-    [HttpGet(Router.EmployeeRouting.Paginated)]
+    [HttpGet("Api/V1/Employee/Paginated")]
     public async Task<IActionResult> Paginated([FromQuery] GetEmployeePaginatedListQuery query)
     {
         var response = await Mediator.Send(query);
@@ -59,11 +58,16 @@ public class EmployeeController : AppControllerBase
         {
             var query = new GetEmployeeAverageOrderAmountQuery(employeeId);
             var averageOrderAmount = await Mediator.Send(query);
+
+            if (averageOrderAmount == null)
+            {
+                throw new Exception("Average order amount is null."); 
+            }
             return Ok(averageOrderAmount);
         }
         catch (Exception ex)
         {
-            return BadRequest(ex.Message);
+            throw new Exception("An error occurred while processing the request.", ex); 
         }
     }
 

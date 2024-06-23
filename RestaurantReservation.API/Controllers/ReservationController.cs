@@ -10,28 +10,28 @@ namespace RestaurantReservation.API.Controllers;
 [ApiController]
 public class ReservationController : AppControllerBase
 {
-    [HttpGet(Router.ReservationRouting.List)]
+    [HttpGet("Api/V1/Reservation/List")]
     public async Task<IActionResult> GetAllReservations()
     {
         var response = await Mediator.Send(new GetReservationListQuery());
         return Ok(response);
     }
 
-    [HttpPost(Router.ReservationRouting.Create)]
+    [HttpPost("Api/V1/Reservation/Create")]
     public async Task<IActionResult> Create([FromBody] AddReservationCommand command)
     {
         var response = await Mediator.Send(command);
         return NewResult(response);
     }
 
-    [HttpPut(Router.ReservationRouting.Edit)]
+    [HttpPut("Api/V1/Reservation/Edit")]
     public async Task<IActionResult> Edit([FromBody] EditReservationCommand command)
     {
         var response = await Mediator.Send(command);
         return NewResult(response);
     }
 
-    [HttpDelete(Router.ReservationRouting.Delete)]
+    [HttpDelete("Api/V1/Reservation/Delete/{id}")]
     public async Task<IActionResult> Delete(int id)
     {
         var response = await Mediator.Send(new DeleteReservationCommand(id));

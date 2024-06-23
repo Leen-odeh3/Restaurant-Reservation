@@ -20,8 +20,7 @@ public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TReques
 
             if (failures.Count != 0)
             {
-                var message = failures.Select(x => x.PropertyName + ": " + x.ErrorMessage).FirstOrDefault();
-
+                var message = string.Join(Environment.NewLine, failures.Select(x => $"{x.PropertyName}: {x.ErrorMessage}"));
                 throw new ValidationException(message);
 
             }

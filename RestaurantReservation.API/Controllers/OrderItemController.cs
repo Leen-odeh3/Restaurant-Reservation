@@ -10,28 +10,28 @@ namespace RestaurantReservation.API.Controllers;
 [ApiController]
 public class OrderItemController : AppControllerBase
 {
-    [HttpGet(Router.OrderItemRouting.List)]
+    [HttpGet("Api/V1/OrderItem/List")]
     public async Task<IActionResult> GetAllOrderItems()
     {
         var response = await Mediator.Send(new GetOrderItemListQuery());
         return Ok(response);
     }
 
-    [HttpPost(Router.OrderItemRouting.Create)]
+    [HttpPost("Api/V1/OrderItem/Create")]
     public async Task<IActionResult> Create([FromBody] AddOrderItemCommand command)
     {
         var response = await Mediator.Send(command);
         return NewResult(response);
     }
 
-    [HttpPut(Router.OrderItemRouting.Edit)]
+    [HttpPut("Api/V1/OrderItem/Edit")]
     public async Task<IActionResult> Edit([FromBody] UpdateOrderItemCommand command)
     {
         var response = await Mediator.Send(command);
         return NewResult(response);
     }
 
-    [HttpDelete(Router.OrderItemRouting.Delete)]
+    [HttpDelete("Api/V1/OrderItem/Delete/{id}")]
     public async Task<IActionResult> Delete([FromRoute] int id)
     {
         return NewResult(await Mediator.Send(new DeleteOrderItemCommand(id)));
