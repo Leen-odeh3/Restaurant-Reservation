@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using RestaurantReservation.Domain.Entities;
 using RestaurantReservation.Domain.Enums;
 using RestaurantReservation.Infrustructure.Abstracts;
@@ -24,7 +23,7 @@ public class EmployeeService : IEmployeeService
     {
         var existingMenuItem = await _employeeRepository.GetByIdAsync(entity.EmployeeID);
 
-        if (existingMenuItem != null)
+        if (existingMenuItem is not null)
         {
             existingMenuItem.FirstName = entity.FirstName;
             existingMenuItem.RestaurantID = entity.RestaurantID;
@@ -68,7 +67,7 @@ public class EmployeeService : IEmployeeService
                                       x.LastName.Equals(lastName) &&
                                       !x.EmployeeID.Equals(id));
 
-        return result != null;
+        return result is not null;
     }
     public async Task<List<Employee>> GetallManagers()
     {

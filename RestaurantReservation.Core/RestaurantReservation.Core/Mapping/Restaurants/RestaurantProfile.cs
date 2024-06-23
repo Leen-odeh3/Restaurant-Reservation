@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using RestaurantReservation.Domain.Entities;
 
 namespace RestaurantReservation.Core.Mapping.Restaurants;
 public partial class RestaurantProfile : Profile
@@ -9,6 +10,8 @@ public partial class RestaurantProfile : Profile
        GetRestaurantByIDMapping();
        AddRestaurantMapping();
        EditRestaurantMapping();
+       CreateMap<Restaurant, Restaurant>();
+
     }
- 
+
 }

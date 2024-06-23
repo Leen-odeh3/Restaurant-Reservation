@@ -1,4 +1,5 @@
-﻿using RestaurantReservation.Domain.Entities;
+﻿using AutoMapper;
+using RestaurantReservation.Domain.Entities;
 using RestaurantReservation.Infrustructure.Abstracts;
 using RestaurantReservation.Services.Abstracts;
 
@@ -6,9 +7,11 @@ namespace RestaurantReservation.Services.Implementations;
 public class ReservationService : IReservationService
 {
     private readonly IReservationRepository _reservationRepository;
+    private readonly IMapper _mapper;
 
-    public ReservationService(IReservationRepository reservationRepository)
+    public ReservationService(IReservationRepository reservationRepository,IMapper mapper)
     {
+        _mapper = mapper;
         _reservationRepository = reservationRepository ?? throw new ArgumentNullException(nameof(reservationRepository));
     }
 
@@ -30,27 +33,21 @@ public class ReservationService : IReservationService
     public async Task<Reservation> EditAsync(Reservation entity)
     {
         var existingReservation = await _reservationRepository.GetByIdAsync(entity.ReservationID);
-        if (existingReservation == null)
+        if (existingReservation is null)
         {
             throw new Exception($"Reservation with ID {entity.ReservationID} not found.");
         }
 
-        existingReservation.CustomerID = entity.CustomerID;
-        existingReservation.RestaurantID = entity.RestaurantID;
-        existingReservation.TableID = entity.TableID;
-        existingReservation.ReservationDate = entity.ReservationDate;
-        existingReservation.PartySize = entity.PartySize;
-
+        _mapper.Map(entity, existingReservation);
         await _reservationRepository.UpdateAsync(existingReservation);
-
-        return existingReservation; 
+        return existingReservation;
     }
 
 
     public async Task<string> DeleteAsync(Reservation entity)
     {
         var existingOrderItem = await _reservationRepository.GetByIdAsync(entity.ReservationID);
-        if (existingOrderItem == null)
+        if (existingOrderItem is null)
         {
             throw new Exception($"Order item with ID {entity.ReservationID} not found.");
         }

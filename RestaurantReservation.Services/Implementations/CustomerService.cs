@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using RestaurantReservation.Domain.Entities;
 using RestaurantReservation.Infrustructure.Abstracts;
 using RestaurantReservation.Services.Abstracts;
@@ -8,9 +9,10 @@ namespace RestaurantReservation.Services.Implementations;
 public class CustomerService : ICustomerService
 {
     private readonly ICustomerRepository _customerRepository;
-
-    public CustomerService(ICustomerRepository customerRepository)
+    private readonly IMapper _mapper;
+    public CustomerService(ICustomerRepository customerRepository,IMapper mapper)
     {
+        _mapper=mapper;
         _customerRepository = customerRepository ?? throw new ArgumentNullException(nameof(customerRepository));
     }
 
@@ -41,21 +43,15 @@ public class CustomerService : ICustomerService
     {
         var existingCustomer = await _customerRepository.GetByIdAsync(customer.CustomerID);
 
-        if (existingCustomer != null)
+        if (existingCustomer is null)
         {
-            existingCustomer.FirstName = customer.FirstName;
-            existingCustomer.LastName = customer.LastName;
-            existingCustomer.Email = customer.Email;
-            existingCustomer.CustomerPhoneNumber = customer.CustomerPhoneNumber;
-
-            await _customerRepository.UpdateAsync(existingCustomer);
-
-            return existingCustomer;
+            throw new Exception($"Customer with ID {customer.CustomerID} not found.");
         }
-        else
-        {
-            throw new Exception("Customer not found");
-        }
+
+        _mapper.Map(customer, existingCustomer);
+        await _customerRepository.UpdateAsync(existingCustomer);
+
+        return existingCustomer;
     }
 
     public async Task<List<Customer>> GetAllAsync()

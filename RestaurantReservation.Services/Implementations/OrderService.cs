@@ -1,4 +1,5 @@
-﻿using RestaurantReservation.Domain.Entities;
+﻿using AutoMapper;
+using RestaurantReservation.Domain.Entities;
 using RestaurantReservation.Infrustructure.Abstracts;
 using RestaurantReservation.Infrustructure.Repositories;
 using RestaurantReservation.Services.Abstracts;
@@ -8,10 +9,11 @@ namespace RestaurantReservation.Services.Implementations;
 public class OrderService : IOrderService
 {
     private readonly IOrderRepository _orderRepository;
-
-    public OrderService(IOrderRepository orderRepository)
+    private readonly IMapper _mapper;
+    public OrderService(IOrderRepository orderRepository, IMapper mapper)
     {
         _orderRepository = orderRepository ?? throw new ArgumentNullException(nameof(orderRepository));
+        _mapper = mapper;
     }
 
     public async Task<Order> AddAsync(Order order)
@@ -40,22 +42,21 @@ public class OrderService : IOrderService
     {
         var existingOrder = await _orderRepository.GetByIdAsync(order.OrderID);
 
-        if (existingOrder is not null)
+        if (existingOrder is null)
         {
-            existingOrder.EmployeeID = order.EmployeeID;
-            existingOrder.ReservationID = order.ReservationID;
-            existingOrder.OrderDate = order.OrderDate;
-            existingOrder.TotalAmount = order.TotalAmount;
-            existingOrder.OrderItems = order.OrderItems;
-
-            await _orderRepository.UpdateAsync(existingOrder);
-
-            return existingOrder;
+            throw new Exception($"Order with ID {order.OrderID} not found.");
         }
-        else
+
+        existingOrder.OrderItems.Clear();
+        foreach (var item in order.OrderItems)
         {
-            throw new Exception("Order not found");
+            existingOrder.OrderItems.Add(item);
         }
+
+        _mapper.Map(order, existingOrder);
+        await _orderRepository.UpdateAsync(existingOrder);
+
+        return existingOrder;
     }
 
     public async Task<List<Order>> GetAllAsync()
@@ -72,14 +73,14 @@ public class OrderService : IOrderService
     private async Task<decimal> CalculateTotalAmount(int orderId)
     {
         var orderItems = await _orderRepository.GetOrderItemsAsync(orderId);
-        decimal totalAmount = 0;
+        var totalAmount = 0m;
 
         foreach (var item in orderItems)
         {
-            decimal itemQuantity = (decimal)item.Quantity;
-            decimal itemPrice = (decimal)item.Item.Price;
+           var itemQuantity = (decimal)item.Quantity;
+           var itemPrice = (decimal)item.Item.Price;
 
-            decimal itemTotal = itemQuantity * itemPrice;
+           var itemTotal = itemQuantity * itemPrice;
 
             totalAmount += itemTotal;
         }

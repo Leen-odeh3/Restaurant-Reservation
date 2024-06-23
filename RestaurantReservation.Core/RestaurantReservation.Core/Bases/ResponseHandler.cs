@@ -1,10 +1,7 @@
-﻿
-using System.Net;
-
+﻿using System.Net;
 namespace RestaurantReservation.Core.Bases;
 public class ResponseHandler
 {
-
     public ResponseHandler()
     {
 

@@ -1,11 +1,11 @@
 ﻿namespace RestaurantReservation.Domain.AppMetaData;
 public static class Router
 {
-    public const string SignleRoute = "/{id}";
+    private const string SignleRoute = "/{id}";
 
-    public const string root = "Api";
-    public const string version = "V1";
-    public const string Rule = root + "/" + version + "/";
+    private const string Root = "Api";
+    private const string Version = "V1";
+    private const string Rule = Root + "/" + Version + "/";
 
     public static class RestaurantRouting
     {

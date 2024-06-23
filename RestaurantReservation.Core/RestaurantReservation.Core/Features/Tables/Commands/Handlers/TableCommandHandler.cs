@@ -1,11 +1,9 @@
 ﻿using AutoMapper;
 using MediatR;
 using RestaurantReservation.Core.Bases;
-using RestaurantReservation.Core.Features.Restaurants.Commands.Models;
 using RestaurantReservation.Core.Features.Tables.Commands.Models;
 using RestaurantReservation.Domain.Entities;
 using RestaurantReservation.Services.Abstracts;
-using RestaurantReservation.Services.Implementations;
 
 namespace RestaurantReservation.Core.Features.Tables.Commands.Handlers;
 public class TableCommandHandler : ResponseHandler,

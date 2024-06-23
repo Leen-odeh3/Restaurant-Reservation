@@ -5,10 +5,7 @@ using RestaurantReservation.Core.Features.Emoloyees.Queries.Moldels;
 using RestaurantReservation.Core.Features.Emoloyees.Queries.Results;
 using RestaurantReservation.Core.Features.Emoloyees.Queries.Resultsl;
 using RestaurantReservation.Core.Wrappers;
-using RestaurantReservation.Domain.Entities;
 using RestaurantReservation.Services.Abstracts;
-using System.Linq.Expressions;
-
 
 namespace RestaurantReservation.Core.Features.Emoloyees.Queries.Handlers
 {
@@ -77,7 +74,7 @@ namespace RestaurantReservation.Core.Features.Emoloyees.Queries.Handlers
 
                 if (orders.Any())
                 {
-                    decimal averageOrderAmount = orders.Average(o => o.TotalAmount);
+                    var averageOrderAmount = orders.Average(o => o.TotalAmount);
                     return averageOrderAmount;
                 }
 

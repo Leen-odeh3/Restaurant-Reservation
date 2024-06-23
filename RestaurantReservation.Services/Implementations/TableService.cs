@@ -38,7 +38,7 @@ public class TableService : ITableService
     {
         var existingTable = await _tableRepository.GetByIdAsync(table.TableID);
 
-        if (existingTable != null)
+        if (existingTable is not null)
         {
             existingTable.Capacity = table.Capacity;
             existingTable.RestaurantID = table.RestaurantID;

@@ -1,17 +1,19 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using RestaurantReservation.Domain.Entities;
 using RestaurantReservation.Infrustructure.Abstracts;
-using RestaurantReservation.Infrustructure.Repositories;
 using RestaurantReservation.Services.Abstracts;
 
 namespace RestaurantReservation.Services.Implementations;
 public class RestaurantService : IRestaurantService
 {
     private readonly IRestaurantRepository _restaurantRepository;
+    private readonly IMapper _mapper;
 
-    public RestaurantService(IRestaurantRepository restaurantRepository)
+    public RestaurantService(IRestaurantRepository restaurantRepository, IMapper mapper)
     {
         _restaurantRepository = restaurantRepository ?? throw new ArgumentNullException(nameof(restaurantRepository));
+        _mapper = mapper;
     }
 
     public async Task<Restaurant> AddAsync(Restaurant restaurant)
@@ -41,13 +43,9 @@ public class RestaurantService : IRestaurantService
     {
         var existingRestaurant = await _restaurantRepository.GetByIdAsync(restaurant.RestaurantID);
 
-        if (existingRestaurant != null)
+        if (existingRestaurant is not null)
         {
-            existingRestaurant.Name = restaurant.Name;
-            existingRestaurant.Address = restaurant.Address;
-            existingRestaurant.PhoneNumber = restaurant.PhoneNumber;
-            existingRestaurant.OperatingHours = restaurant.OperatingHours;
-
+            _mapper.Map(restaurant, existingRestaurant);
             await _restaurantRepository.UpdateAsync(existingRestaurant);
 
             return existingRestaurant;
@@ -73,6 +71,6 @@ public class RestaurantService : IRestaurantService
         var result = await _restaurantRepository.GetTableNoTracking()
           .FirstOrDefaultAsync(x => x.Name.Equals(name));
 
-        return result != null;
+        return result is not null;
     }
 }
