@@ -62,8 +62,6 @@ public class Program
             option.TokenLifespan = TimeSpan.FromHours(1);
         });
 
-        app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
-
         builder.Services.AddDbContext<AppDbContext>(option =>
         {
             option.UseSqlServer(builder.Configuration.GetConnectionString("dbcontext"));
