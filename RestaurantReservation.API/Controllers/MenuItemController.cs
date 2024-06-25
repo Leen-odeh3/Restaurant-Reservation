@@ -2,7 +2,6 @@
 using RestaurantReservation.API.Base;
 using RestaurantReservation.Core.Features.MenuItems.Commands.Models;
 using RestaurantReservation.Core.Features.MenuItems.Queries.Models;
-using RestaurantReservation.Domain.AppMetaData;
 
 namespace RestaurantReservation.API.Controllers;
 

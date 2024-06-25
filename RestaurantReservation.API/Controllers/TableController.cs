@@ -2,7 +2,7 @@
 using RestaurantReservation.API.Base;
 using RestaurantReservation.Core.Features.Tables.Commands.Models;
 using RestaurantReservation.Core.Features.Tables.Queries.Models;
-using RestaurantReservation.Domain.AppMetaData;
+
 
 namespace RestaurantReservation.API.Controllers;
 

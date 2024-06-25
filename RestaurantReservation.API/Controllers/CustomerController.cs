@@ -2,8 +2,6 @@
 using RestaurantReservation.API.Base;
 using RestaurantReservation.Core.Features.Customers.Commands.Models;
 using RestaurantReservation.Core.Features.Customers.Queries.Models;
-using Router = RestaurantReservation.Domain.AppMetaData.Router;
-
 namespace RestaurantReservation.API.Controllers;
 
 [ApiController]
