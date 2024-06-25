@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RestaurantReservation.API.Base;
 using RestaurantReservation.Core.Features.Emoloyees.Commands.Models;
@@ -8,6 +9,7 @@ using RestaurantReservation.Core.Features.Emoloyees.Queries.Moldels;
 namespace RestaurantReservation.API.Controllers;
 
 [ApiController]
+[Authorize(Roles = "Admin")]
 public class EmployeeController : AppControllerBase
 {
 

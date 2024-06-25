@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RestaurantReservation.API.Base;
 using RestaurantReservation.Core.Features.Orders.Commands.Models;
 using RestaurantReservation.Core.Features.Orders.Queries.Models;
@@ -6,6 +7,7 @@ using RestaurantReservation.Core.Features.Orders.Queries.Models;
 namespace RestaurantReservation.API.Controllers;
 
 [ApiController]
+[Authorize(Roles = "Admin")]
 public class OrderController : AppControllerBase
 {
     [HttpGet("Api/V1/Order/List")]
