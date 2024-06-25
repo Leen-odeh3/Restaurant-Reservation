@@ -39,7 +39,7 @@ public class AuthenticationController : ControllerBase
     {
 
         var userExist = await _userManager.FindByEmailAsync(registerUser.Email);
-        if (userExist != null)
+        if (userExist is not null)
         {
             return StatusCode(StatusCodes.Status403Forbidden,
                 new Response { Status = "Error", Message = "User already exists!" });
@@ -97,7 +97,7 @@ public class AuthenticationController : ControllerBase
         }
     }
 
-    [HttpDelete("DeleteUser/{userId}")]  // Define your route for the DELETE request, for example, "api/auth/DeleteUser/{userId}"
+    [HttpDelete("DeleteUser/{userId}")] 
     public async Task<IActionResult> DeleteUser(string userId)
     {
         try
@@ -106,7 +106,7 @@ public class AuthenticationController : ControllerBase
             var user = await _userManager.FindByIdAsync(userId);
 
 
-            if (user == null)
+            if (user is null)
             {
                 return NotFound(new Response { Status = "Error", Message = "User not found." });
             }
@@ -142,11 +142,10 @@ public class AuthenticationController : ControllerBase
                 return BadRequest(new Response { Status = "Error", Message = "Invalid input parameters." });
             }
 
-            // Find the user by userId
+            
             var user = await _userManager.FindByIdAsync(userId);
 
-            // Check if the user exists
-            if (user == null)
+            if (user is null)
             {
                 return NotFound(new Response { Status = "Error", Message = "User not found." });
             }
@@ -184,7 +183,7 @@ public class AuthenticationController : ControllerBase
     public async Task<IActionResult> ConfirmEmail(string token, string email)
     {
         var user = await _userManager.FindByEmailAsync(email);
-        if (user != null)
+        if (user is not null)
         {
             var result = await _userManager.ConfirmEmailAsync(user, token);
             if (result.Succeeded)
@@ -251,7 +250,7 @@ public class AuthenticationController : ControllerBase
         var signIn = await _signInManager.TwoFactorSignInAsync("Email", code, false, false);
         if (signIn.Succeeded)
         {
-            if (user != null)
+            if (user is not null)
             {
                 var authClaims = new List<Claim>
                 {
