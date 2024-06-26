@@ -13,40 +13,40 @@ namespace RestaurantReservation.API.Controllers;
 public class EmployeeController : AppControllerBase
 {
 
-    [HttpGet("Api/V1/Employee/List")]
+    [HttpGet("api/v1/employee/list")]
     public async Task<IActionResult> GetAllEmployees()
     {
         var response = await Mediator.Send(new GetEmployeeListQuery());
         return Ok(response);
     }
-    [HttpGet("Api/V1/Employee/List/Manager")]
+    [HttpGet("api/v1/employee/list/manager")]
     public async Task<IActionResult> GetAllManagersEmployee()
     {
         var response = await Mediator.Send(new GetListAllManagers());
         return Ok(response);
     }
 
-    [HttpPost("Api/V1/Employee/Create")]
+    [HttpPost("api/v1/employee/create")]
     public async Task<IActionResult> Create([FromBody] AddEmployeeCommand command)
     {
         var response = await Mediator.Send(command);
         return NewResult(response);
     }
 
-    [HttpPut("Api/V1/Employee/Edit")]
+    [HttpPut("api/v1/employee/edit")]
     public async Task<IActionResult> Edit([FromBody] EditEmployeeCommand command)
     {
         var response = await Mediator.Send(command);
         return NewResult(response);
     }
 
-    [HttpDelete("Api/V1/Employee/{id}")]
+    [HttpDelete("api/v1/employee/{id}")]
     public async Task<IActionResult> Delete(int id)
     {
         var response = await Mediator.Send(new DeleteEmployeeCommand(id));
         return NewResult(response);
     }
-    [HttpGet("Api/V1/Employee/Paginated")]
+    [HttpGet("api/v1/employee/paginated")]
     public async Task<IActionResult> Paginated([FromQuery] GetEmployeePaginatedListQuery query)
     {
         var response = await Mediator.Send(query);

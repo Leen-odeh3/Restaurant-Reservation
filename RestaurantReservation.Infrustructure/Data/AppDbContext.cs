@@ -96,17 +96,7 @@ public class AppDbContext : IdentityDbContext<IdentityUser>
 
 
         base.OnModelCreating(modelBuilder);
-        SeedRoles(modelBuilder);
     }
-    private static void SeedRoles(ModelBuilder builder)
-    {
-        builder.Entity<IdentityRole>().HasData
-            (
-            new IdentityRole() { Id = "1", Name = "Admin", ConcurrencyStamp = "1", NormalizedName = "Admin" },
-            new IdentityRole() { Id = "2", Name = "User", ConcurrencyStamp = "2", NormalizedName = "User" }
-        );
-    }
-
     public DbSet<Customer> Customers { get; set; }
     public DbSet<Employee> Employees { get; set; }
     public DbSet<MenuItem> MenuItems { get; set; }

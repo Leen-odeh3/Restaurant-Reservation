@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using RestaurantReservation.Domain.Authentication.Login;
 using RestaurantReservation.Domain.Authentication.SignUp;
@@ -33,17 +32,16 @@ public class AuthenticationController : ControllerBase
         _emailService = emailService;
         _configuration = configuration;
     }
-
     [HttpPost("Register")]
-    public async Task<IActionResult> Register([FromBody] RegisterUser registerUser, string role)
+    public async Task<IActionResult> Register([FromBody] RegisterUser registerUser)
     {
-
         var userExist = await _userManager.FindByEmailAsync(registerUser.Email);
         if (userExist is not null)
         {
             return StatusCode(StatusCodes.Status403Forbidden,
                 new Response { Status = "Error", Message = "User already exists!" });
         }
+
         IdentityUser user = new()
         {
             Email = registerUser.Email,
@@ -51,133 +49,70 @@ public class AuthenticationController : ControllerBase
             UserName = registerUser.Username,
             TwoFactorEnabled = true
         };
+
+        var result = await _userManager.CreateAsync(user, registerUser.Password);
+        if (!result.Succeeded)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError,
+                new Response { Status = "Error", Message = "User creation failed!" });
+        }
+
+        var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+        var confirmationLink = Url.Action(nameof(ConfirmEmail), "Authentication", new { token, email = user.Email }, Request.Scheme);
+        var message = new Message(new string[] { user.Email! }, "Confirmation email link", confirmationLink!);
+        _emailService.SendEmail(message);
+
+        return StatusCode(StatusCodes.Status200OK,
+            new Response { Status = "Success", Message = $"User created & Email sent to {user.Email} successfully" });
+    }
+
+
+    [HttpPost("Register-Admin")]
+    public async Task<IActionResult> RegisterAdmin([FromBody] RegisterUser registerUser)
+    {
+        var role = "Admin";
+
+        var userExist = await _userManager.FindByEmailAsync(registerUser.Email);
+        if (userExist is not null)
+        {
+            return StatusCode(StatusCodes.Status403Forbidden,
+                new Response { Status = "Error", Message = "User already exists!" });
+        }
+
+        IdentityUser user = new()
+        {
+            Email = registerUser.Email,
+            SecurityStamp = Guid.NewGuid().ToString(),
+            UserName = registerUser.Username,
+            TwoFactorEnabled = true
+        };
+
+        var result = await _userManager.CreateAsync(user, registerUser.Password);
+        if (!result.Succeeded)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError,
+                new Response { Status = "Error", Message = "User creation failed!" });
+        }
+
+      
         if (await _roleManager.RoleExistsAsync(role))
         {
-            var result = await _userManager.CreateAsync(user, registerUser.Password);
-            if (!result.Succeeded)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    new Response { Status = "Error", Message = "User Failed to Create" });
-            }
-
             await _userManager.AddToRoleAsync(user, role);
-
-            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            var confirmationLink = Url.Action(nameof(ConfirmEmail), "Authentication", new { token, email = user.Email }, Request.Scheme);
-            var message = new Message(new string[] { user.Email! }, "Confirmation email link", confirmationLink!);
-            _emailService.SendEmail(message);
-
-
-
-            return StatusCode(StatusCodes.Status200OK,
-                new Response { Status = "Success", Message = $"User created & Email Sent to {user.Email} SuccessFully" });
-
         }
         else
         {
             return StatusCode(StatusCodes.Status500InternalServerError,
-                    new Response { Status = "Error", Message = "This Role Doesnot Exist." });
+                new Response { Status = "Error", Message = "Admin role does not exist!" });
         }
 
+        var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+        var confirmationLink = Url.Action(nameof(ConfirmEmail), "Authentication", new { token, email = user.Email }, Request.Scheme);
+        var message = new Message(new string[] { user.Email! }, "Confirmation email link", confirmationLink!);
+        _emailService.SendEmail(message);
+
+        return StatusCode(StatusCodes.Status200OK,
+            new Response { Status = "Success", Message = $"User created & Email sent to {user.Email} successfully" });
     }
-
-    [HttpGet("GetAllUsers")]  
-    public async Task<IActionResult> GetAllUsers()
-    {
-        try
-        {
-            var allUsers = await _userManager.Users.ToListAsync();
-
-            return Ok(allUsers);
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError,
-                new Response { Status = "Error", Message = "An error occurred while fetching users." });
-        }
-    }
-
-    [HttpDelete("DeleteUser/{userId}")] 
-    public async Task<IActionResult> DeleteUser(string userId)
-    {
-        try
-        {
-
-            var user = await _userManager.FindByIdAsync(userId);
-
-
-            if (user is null)
-            {
-                return NotFound(new Response { Status = "Error", Message = "User not found." });
-            }
-
-            var result = await _userManager.DeleteAsync(user);
-
-
-            if (result.Succeeded)
-            {
-                return Ok(new Response { Status = "Success", Message = "User deleted successfully." });
-            }
-            else
-            {
-
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    new Response { Status = "Error", Message = "Failed to delete user." });
-            }
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError,
-                new Response { Status = "Error", Message = "An error occurred while deleting the user." });
-        }
-    }
-
-    [HttpPut("UpdateUser/{userId}")]
-    public async Task<IActionResult> UpdateUser(string userId, [FromBody] RegisterUser updateUserDto)
-    {
-        try
-        {
-            if (string.IsNullOrWhiteSpace(userId) || updateUserDto == null)
-            {
-                return BadRequest(new Response { Status = "Error", Message = "Invalid input parameters." });
-            }
-
-            
-            var user = await _userManager.FindByIdAsync(userId);
-
-            if (user is null)
-            {
-                return NotFound(new Response { Status = "Error", Message = "User not found." });
-            }
-
-            user.Email = updateUserDto.Email;
-            user.UserName = updateUserDto.Username;
-
-
-            var result = await _userManager.UpdateAsync(user);
-
-
-            if (result.Succeeded)
-            {
-                return Ok(new Response { Status = "Success", Message = "User updated successfully." });
-            }
-            else
-            {
-
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    new Response { Status = "Error", Message = "Failed to update user." });
-            }
-        }
-        catch (Exception ex)
-        {
-
-
-            return StatusCode(StatusCodes.Status500InternalServerError,
-                new Response { Status = "Error", Message = "An error occurred while updating the user." });
-        }
-    }
-
-
 
     [HttpGet("ConfirmEmail")]
     public async Task<IActionResult> ConfirmEmail(string token, string email)
