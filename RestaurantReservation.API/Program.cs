@@ -1,35 +1,52 @@
-namespace RestaurantReservation.API
+using Microsoft.EntityFrameworkCore;
+using RestaurantReservation.Core;
+using RestaurantReservation.Core.MiddleWare;
+using RestaurantReservation.Infrustructure;
+using RestaurantReservation.Infrustructure.Data;
+using RestaurantReservation.Services;
+
+
+namespace RestaurantReservation.API;
+
+public class Program
 {
-    public class Program
+    public static void Main(string[] args)
     {
-        public static void Main(string[] args)
+        var builder = WebApplication.CreateBuilder(args);
+
+
+        builder.Services.AddDbContext<AppDbContext>(option =>
         {
-            var builder = WebApplication.CreateBuilder(args);
+            option.UseSqlServer(builder.Configuration.GetConnectionString("dbcontext"));
+        });
 
-            // Add services to the container.
+        builder.Services.AddControllers();
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen();
 
-            builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+        #region Dependency injections
 
-            var app = builder.Build();
+        builder.Services.AddInfrastructureDependencies()
+                        .AddServiceDependencies()
+                        .AddCoreDependencies();                         
+        #endregion
 
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
+        var app = builder.Build();
 
-            app.UseHttpsRedirection();
-
-            app.UseAuthorization();
-
-
-            app.MapControllers();
-
-            app.Run();
+        // Configure the HTTP request pipeline.
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI();
         }
+        app.UseMiddleware<ErrorHandlerMiddleware>();
+
+        app.UseHttpsRedirection();
+
+        app.UseAuthorization();
+
+        app.MapControllers();
+
+        app.Run();
     }
 }
